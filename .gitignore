@@ -7,3 +7,5 @@ alembic/versions/
 .DS_Store
 .vscode/
 *.log
+docker-compose.yml
+alembic.ini
