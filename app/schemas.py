@@ -5,7 +5,7 @@ from typing import Optional
 class WishlistItemBase(BaseModel):
     name: str
     description: Optional[str] = None
-    visited: Optional[str] = False
+    visited: bool = False
 
 class WishlistItemCreate(WishlistItemBase):
     pass

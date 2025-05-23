@@ -3,7 +3,7 @@ from app.models import WishlistItem, VisitedItem
 from app.schemas import WishlistItemCreate, WishlistItemOut, WishlistItemUpdate, VisitedItemCreate, VisitedItemOut, VisitedItemUpdate
 
 
-def create_visited_item(db: Session, item: VisitedItemCreate):
+def create_wishlist_item(db: Session, item: WishlistItemCreate):
     db_item = WishlistItem(**item.model_dump())
     db.add(db_item)
     db.commit()
