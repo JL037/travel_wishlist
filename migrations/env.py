@@ -6,11 +6,19 @@ from sqlalchemy import pool
 from alembic import context
 from app.models import Base
 from app.models import WishlistItem, VisitedItem
+import os 
+from dotenv import load_dotenv
+load_dotenv(override=True)
+with open(".env") as f:
+    contents = f.read()
+    print("\n\nACTUAL .env FILE:\n", contents)
+
+print("FROM ENV.PY: DATABASE_URL =", os.getenv("DATABASE_URL"))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-
+config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
