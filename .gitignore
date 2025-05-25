@@ -1,11 +1,124 @@
-venv/
-__pycache__/
+# =============================
+# Python
+# =============================
+
 *.pyc
-.env
-alembic/versions/
-.idea/
-.DS_Store
-.vscode/
+*.pyo
+*.pyd
+__pycache__/
+*.sqlite3
+*.egg
+*.egg-info/
+*.eggs/
 *.log
-docker-compose.yml
+
+# =============================
+# Environments
+# =============================
+
+.env
+.env.*
+.venv/
+venv/
+ENV/
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# =============================
+# Poetry & Pipenv
+# =============================
+
+poetry.lock
+Pipfile.lock
+
+# =============================
+# Pytest & Coverage
+# =============================
+
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.pytest_cache/
+tests/__pycache__/
+
+# =============================
+# FastAPI / Uvicorn
+# =============================
+
+instance/
+*.db
+*.pid
+
+# =============================
+# Alembic
+# =============================
+
 alembic.ini
+migrations/versions/*.pyc
+migrations/__pycache__/
+
+# =============================
+# Docker
+# =============================
+
+*.tar
+*.log
+docker-compose.override.yml
+
+# Docker-specific files you might not want to commit
+.dockerignore
+Dockerfile.*
+
+# =============================
+# VSCode & Editors
+# =============================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# =============================
+# OS System Files
+# =============================
+
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# =============================
+# Node Modules (if you add React or Next.js frontend)
+# =============================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =============================
+# Build Artifacts
+# =============================
+
+build/
+dist/
+*.spec
+
+# =============================
+# Misc
+# =============================
+
+*.bak
+*.tmp
+*.old
+
+TODO.md

@@ -2,41 +2,41 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
-class WishlistItemBase(BaseModel):
+class WishlistLocationBase(BaseModel):
     name: str
     description: Optional[str] = None
     visited: bool = False
 
-class WishlistItemCreate(WishlistItemBase):
+class WishlistLocationCreate(WishlistLocationBase):
     pass
 
-class WishlistItemUpdate(WishlistItemBase):
+class WishlistLocationUpdate(WishlistLocationBase):
     pass
 
-class WishlistItemOut(WishlistItemBase):
+class WishlistLocationOut(WishlistLocationBase):
     id: int
     added_on: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
-class VisitedItemBase(BaseModel):
+class VisitedLocationBase(BaseModel):
     rating: Optional[int] = None
     notes: Optional[str] = None
     visited_on: Optional[datetime] = None
 
-class VisitedItemCreate(VisitedItemBase):
+class VisitedItemCreate(VisitedLocationBase):
     wishlist_id: int
 
 
-class VisitedItemUpdate(VisitedItemBase):
+class VisitedItemUpdate(VisitedLocationBase):
     pass
 
-class VisitedItemOut(VisitedItemBase):
+class VisitedItemOut(VisitedLocationBase):
     id: int
     wishlist_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
