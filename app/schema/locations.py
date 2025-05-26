@@ -2,16 +2,20 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
+
 class WishlistLocationBase(BaseModel):
     name: str
     description: Optional[str] = None
     visited: bool = False
 
+
 class WishlistLocationCreate(WishlistLocationBase):
     pass
 
+
 class WishlistLocationUpdate(WishlistLocationBase):
     pass
+
 
 class WishlistLocationOut(WishlistLocationBase):
     id: int
@@ -20,10 +24,12 @@ class WishlistLocationOut(WishlistLocationBase):
     class Config:
         from_attributes = True
 
+
 class VisitedLocationBase(BaseModel):
     rating: Optional[int] = None
     notes: Optional[str] = None
     visited_on: Optional[datetime] = None
+
 
 class VisitedItemCreate(VisitedLocationBase):
     wishlist_id: int
@@ -32,11 +38,10 @@ class VisitedItemCreate(VisitedLocationBase):
 class VisitedItemUpdate(VisitedLocationBase):
     pass
 
+
 class VisitedItemOut(VisitedLocationBase):
     id: int
     wishlist_id: int
 
     class Config:
         from_attributes = True
-
-

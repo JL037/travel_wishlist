@@ -3,10 +3,12 @@ from typing import Optional
 from datetime import datetime
 from app.models.users import UserRole
 
+
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
     role: Optional[UserRole] = UserRole.USER
+
 
 class UserRead(BaseModel):
     id: int
@@ -17,6 +19,6 @@ class UserRead(BaseModel):
     class Config:
         from_attributes = True
 
-class UserInDB(UserRead):
-    hashed_password: str 
 
+class UserInDB(UserRead):
+    hashed_password: str
