@@ -5,10 +5,11 @@ from app.database import get_db
 from app.services import wishlist_services
 from app.crud import create_wishlist_item
 from app.schema import locations
-
+from app.dependencies.auth import get_current_user
 router = APIRouter(
     prefix="/wishlist",
-    tags=["Wishlist Items"]
+    tags=["Wishlist Items"],
+    dependencies=[Depends(get_current_user)]
 )
 
 @router.post("/", response_model=locations.WishlistLocationOut)
