@@ -4,9 +4,11 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from models.location import Base
+from app.database import Base
 import os
+from app.models import *
 from dotenv import load_dotenv
+
 
 load_dotenv(override=True)
 with open(".env") as f:
@@ -77,6 +79,7 @@ def run_migrations_online() -> None:
         context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
+            print("📦 Tables Alembic sees:", Base.metadata.tables.keys())
             context.run_migrations()
 
 

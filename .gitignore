@@ -1,125 +1,104 @@
-# =============================
-# Python
-# =============================
-
-*.pyc
+# ========================
+# Python cache and artifacts
+# ========================
+__pycache__/
+*.py[cod]
 *.pyo
 *.pyd
-__pycache__/
-*.sqlite3
-*.egg
+*.so
 *.egg-info/
-*.eggs/
+*.egg
 *.log
 
-# =============================
-# Environments
-# =============================
-
-.env
-.env.*
+# ========================
+# Virtual environments
+# ========================
 .venv/
 venv/
 ENV/
 env/
-pip-log.txt
-pip-delete-this-directory.txt
+.env
+env.bak/
+.venv.bak/
 
-# =============================
-# Poetry & Pipenv
-# =============================
+# ========================
+# IDEs & Editor settings
+# ========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
 
-poetry.lock
-Pipfile.lock
+# ========================
+# Environment and Secrets
+# ========================
+.env
+.env.*
+.secret
+*.key
+*.pem
+*.crt
+*.jks
+*.pfx
+*.bak
+gitleaks-report.json
+git-history-report.json
+git-history-scan.json
 
-# =============================
-# Pytest & Coverage
-# =============================
+# ========================
+# Alembic / SQL migrations
+# ========================
+migrations/versions/*.pyc
+migrations/__pycache__/
+migrations/versions/__pycache__/
+*.sqlite3
 
-.cache/
+# ========================
+# Docker
+# ========================
+**/.dockerignore
+**/Dockerfile
+docker-compose.override.yml
+docker-compose.*.yml
+.docker/
+.docker-temp/
+
+# ========================
+# Test and coverage
+# ========================
 .coverage
-.coverage.*
 htmlcov/
 .tox/
 nosetests.xml
-coverage.xml
-*.cover
+pytest_cache/
 .pytest_cache/
+test-results/
 tests/__pycache__/
 
-# =============================
-# FastAPI / Uvicorn
-# =============================
-
-instance/
-*.db
-*.pid
-
-# =============================
-# Alembic
-# =============================
-
-alembic.ini
-migrations/versions/*.pyc
-migrations/__pycache__/
-
-# =============================
-# Docker
-# =============================
-
-*.tar
-*.log
-docker-compose.override.yml
-
-# Docker-specific files you might not want to commit
-.dockerignore
-Dockerfile.*
-
-# =============================
-# VSCode & Editors
-# =============================
-
-.vscode/
-.idea/
+# ========================
+# Output and local files
+# ========================
+*.DS_Store
 *.swp
-*.swo
-*.sublime-workspace
-*.sublime-project
+*.tmp
+*.bak
+*~
+*.pid
+*.log
+*.orig
 
-# =============================
-# OS System Files
-# =============================
-
-.DS_Store
-Thumbs.db
-ehthumbs.db
-Icon?
-Desktop.ini
-
-# =============================
-# Node Modules (if you add React or Next.js frontend)
-# =============================
-
+# ========================
+# Node/npm junk (if React Native or frontend exists)
+# ========================
 node_modules/
+dist/
+build/
+*.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# =============================
-# Build Artifacts
-# =============================
 
-build/
-dist/
-*.spec
-
-# =============================
-# Misc
-# =============================
-
-*.bak
-*.tmp
-*.old
-
-TODO.md
-.json
+TODO.md 
+db_blueprint.md 
+alembic.ini

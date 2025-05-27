@@ -16,6 +16,6 @@ class User(Base):
     email: Mapped[str] = mapped_column(String, index=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     created_at: Mapped[DateTime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now
+        DateTime(timezone=True), server_default=func.now()
     )
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.USER)

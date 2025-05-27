@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models.location import WishlistLocation
-from schema.locations import (
+from app.models.location import WishlistLocation
+from app.schema.locations import (
     WishlistLocationCreate,
     WishlistLocationUpdate,
 )

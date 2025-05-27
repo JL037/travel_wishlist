@@ -1,17 +1,20 @@
-"""Add added_on field
+"""restore location tables
 
-Revision ID: 017470e160c3
-Revises: a6c3a1f7cca4
-Create Date: 2025-05-22 16:10:54.996991
+Revision ID: 181b344afebd
+Revises: fc6c12504272
+Create Date: 2025-05-27 12:38:58.132582
 
 """
 
 from typing import Sequence, Union
 
+from alembic import op
+import sqlalchemy as sa
+
 
 # revision identifiers, used by Alembic.
-revision: str = "017470e160c3"
-down_revision: Union[str, None] = "a6c3a1f7cca4"
+revision: str = "181b344afebd"
+down_revision: Union[str, None] = "fc6c12504272"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

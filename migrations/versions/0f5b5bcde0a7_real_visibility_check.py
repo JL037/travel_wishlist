@@ -1,17 +1,20 @@
-"""Add added_on field
+"""real visibility check
 
-Revision ID: 017470e160c3
-Revises: a6c3a1f7cca4
-Create Date: 2025-05-22 16:10:54.996991
+Revision ID: 0f5b5bcde0a7
+Revises: 60c2753e7a22
+Create Date: 2025-05-27 12:18:42.440317
 
 """
 
 from typing import Sequence, Union
 
+from alembic import op
+import sqlalchemy as sa
+
 
 # revision identifiers, used by Alembic.
-revision: str = "017470e160c3"
-down_revision: Union[str, None] = "a6c3a1f7cca4"
+revision: str = "0f5b5bcde0a7"
+down_revision: Union[str, None] = "60c2753e7a22"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

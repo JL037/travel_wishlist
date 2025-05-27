@@ -1,10 +1,7 @@
 from typing import Optional
 from sqlalchemy import ForeignKey, String, DateTime, func, Boolean, Integer, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-
-
-class Base(DeclarativeBase):
-    pass
+from app.database import Base
 
 
 class WishlistLocation(Base):
@@ -18,7 +15,7 @@ class WishlistLocation(Base):
     )
     visited: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    visited_item: Mapped[Optional["VisitedLocation"]] = relationship(
+    visited_location: Mapped[Optional["VisitedLocation"]] = relationship(
         back_populates="wishlist_location", cascade="all, delete-orphan", uselist=False
     )
 
@@ -34,6 +31,6 @@ class VisitedLocation(Base):
     rating: Mapped[int] = mapped_column(Integer, nullable=True)
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
-    wishlist_item: Mapped[Optional["WishlistLocation"]] = relationship(
+    wishlist_location: Mapped[Optional["WishlistLocation"]] = relationship(
         back_populates="visited_location"
     )

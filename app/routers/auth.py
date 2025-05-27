@@ -1,12 +1,14 @@
-from fastapi import Depends, APIRouter, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import Depends, APIRouter, HTTPException, status, Security
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app.schema.user import UserRead, UserCreate
 from app.models.users import User
 from app.database import get_db
 from app.utils.security import create_access_token, hash_password, verify_password
 from sqlalchemy.exc import IntegrityError
+from app.dependencies.auth import get_current_user, oauth2_scheme
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
@@ -42,3 +44,17 @@ def login(
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_access_token({"sub": str(user.id)})
     return {"access_token": token, "token_type": "bearer"}
+
+
+@router.get("/me", response_model=UserRead)
+def read_current_user(current_user: User = Depends(get_current_user)):
+    return current_user
+
+
+@router.get("/test-auth")
+def test_auth(
+    token: str = Security(oauth2_scheme), current_user: User = Depends(get_current_user)
+):
+    print("🔥🔥🔥 THIS IS DEFINITELY RUNNING 🔥🔥🔥")
+    print("🐢 Token received manually:", token)
+    return {"token": token}

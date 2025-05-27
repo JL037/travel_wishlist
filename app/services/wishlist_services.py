@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.location import WishlistLocation
+from app.models.location import WishlistLocation
 
 
 def get_all_items(db: Session):

@@ -1,17 +1,20 @@
-"""Add added_on field
+"""create users table for real this time for real for real
 
-Revision ID: 017470e160c3
-Revises: a6c3a1f7cca4
-Create Date: 2025-05-22 16:10:54.996991
+Revision ID: 7f9011f3c6e9
+Revises: 0f5b5bcde0a7
+Create Date: 2025-05-27 12:27:57.696626
 
 """
 
 from typing import Sequence, Union
 
+from alembic import op
+import sqlalchemy as sa
+
 
 # revision identifiers, used by Alembic.
-revision: str = "017470e160c3"
-down_revision: Union[str, None] = "a6c3a1f7cca4"
+revision: str = "7f9011f3c6e9"
+down_revision: Union[str, None] = "0f5b5bcde0a7"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
