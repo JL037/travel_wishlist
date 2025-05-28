@@ -1,4 +1,4 @@
-.PHONY: secure run test clean docker docker-stop docker-rebuild docker-logs
+.PHONY: secure run test clean docker docker-stop docker-rebuild docker-logs psql
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "🛠️  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -36,3 +36,6 @@ format: ## Auto-format Python code with Black
 
 lint: ## Run Ruff linter on the codebase
 	ruff check .
+
+psql: ## run postgresql
+	psql -U jaredlemler -h localhost -d travel_wishlist

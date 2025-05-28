@@ -6,8 +6,13 @@ from app.schema.locations import (
 )
 
 
-def create_wishlist_item(db: Session, item: WishlistLocationCreate):
-    db_item = WishlistLocation(**item.model_dump())
+def create_wishlist_item(db: Session, item: WishlistLocationCreate, user_id: int):
+    db_item = WishlistLocation(
+        name=item.name,
+        description=item.description,
+        visited=item.visited,
+        owner_id=user_id
+    )
     db.add(db_item)
     db.commit()
     db.refresh(db_item)

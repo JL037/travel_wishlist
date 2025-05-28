@@ -13,8 +13,10 @@ class WishlistLocationCreate(WishlistLocationBase):
     pass
 
 
-class WishlistLocationUpdate(WishlistLocationBase):
-    pass
+class WishlistLocationUpdate(BaseModel):
+    name: str | None = None
+    description: Optional[str] = None
+    visited: bool | None = None
 
 
 class WishlistLocationOut(WishlistLocationBase):

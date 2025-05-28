@@ -9,6 +9,7 @@ class WishlistLocation(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
+    owner_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     description: Mapped[str] = mapped_column(String(120))
     added_on: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
@@ -24,6 +25,7 @@ class VisitedLocation(Base):
     __tablename__ = "visited_location"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    owner_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     wishlist_id: Mapped[int] = mapped_column(
         ForeignKey("wishlist_location.id"), nullable=False
     )
