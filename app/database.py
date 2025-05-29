@@ -1,16 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session, DeclarativeBase
-import os
-from dotenv import load_dotenv
+from app.core.config import settings
 from typing import Generator
 
-load_dotenv()
 
-
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = settings.DATABASE_URL
 print("Using DB URL:", DATABASE_URL)
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(str(settings.DATABASE_URL), echo=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

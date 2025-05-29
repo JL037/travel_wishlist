@@ -33,6 +33,7 @@ env.bak/
 # Environment and Secrets
 # ========================
 .env
+env
 .env.*
 .secret
 *.key
@@ -102,3 +103,34 @@ yarn-error.log*
 TODO.md 
 db_blueprint.md 
 alembic.ini
+config.py
+
+# VS Code workspace settings
+*.code-workspace
+
+# Ruff cache
+.ruff_cache/
+
+# SQLite and test DB leftovers
+*.db
+*.sqlite
+
+# Compiled Python files outside standard locations
+*.pyd
+
+# Pyright / Pylance cache (if using TypeScript-style type checking)
+typings/
+
+# Coverage
+*.cover
+.coverage.*
+cache/
+
+
+# direnv
+.envrc
+.envrc.bak
+
+# Poetry
+poetry.lock
+

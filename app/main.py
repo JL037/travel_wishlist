@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import wishlist, auth
+from app.routers import wishlist, auth, visited
 from fastapi.openapi.utils import get_openapi
 
 app = FastAPI()
@@ -12,6 +12,7 @@ def read_root():
 
 app.include_router(wishlist.router)
 app.include_router(auth.router)
+app.include_router(visited.router)
 
 
 def custom_openapi():

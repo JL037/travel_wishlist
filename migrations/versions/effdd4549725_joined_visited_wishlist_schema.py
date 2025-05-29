@@ -1,8 +1,8 @@
-"""create users table for real this time for real for real
+"""joined visited/wishlist schema
 
-Revision ID: 7f9011f3c6e9
-Revises: 0f5b5bcde0a7
-Create Date: 2025-05-27 12:27:57.696626
+Revision ID: effdd4549725
+Revises: f97f6a2f727f
+Create Date: 2025-05-28 15:01:52.036927
 
 """
 
@@ -11,8 +11,8 @@ from typing import Sequence, Union
 
 
 # revision identifiers, used by Alembic.
-revision: str = "7f9011f3c6e9"
-down_revision: Union[str, None] = "0f5b5bcde0a7"
+revision: str = "effdd4549725"
+down_revision: Union[str, None] = "f97f6a2f727f"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

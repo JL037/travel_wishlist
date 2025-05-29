@@ -1,23 +1,29 @@
 from typing import Optional
-from sqlalchemy import ForeignKey, String, DateTime, func, Boolean, Integer, Text
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey, String, DateTime, func, Integer, Text, Float
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
+from app.models.users import User
 
 
 class WishlistLocation(Base):
     __tablename__ = "wishlist_location"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(30))
-    owner_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    description: Mapped[str] = mapped_column(String(120))
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    city: Mapped[str] = mapped_column(String, nullable=False)
+    country: Mapped[str] = mapped_column(String, nullable=False)
+    description: Mapped[str] = mapped_column(String, nullable=True)
+    visited: Mapped[bool] = mapped_column(default=False)
+    latitude: Mapped[float] = mapped_column(Float, nullable=True)
+    longitude: Mapped[float] = mapped_column(Float, nullable=True)
     added_on: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
-    visited: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    visited_location: Mapped[Optional["VisitedLocation"]] = relationship(
-        back_populates="wishlist_location", cascade="all, delete-orphan", uselist=False
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    owner = relationship("User", back_populates="locations")
+    visited_locations: Mapped[list["VisitedLocation"]] = relationship(
+        back_populates="wishlist_location"
     )
 
 
@@ -33,6 +39,8 @@ class VisitedLocation(Base):
     rating: Mapped[int] = mapped_column(Integer, nullable=True)
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
-    wishlist_location: Mapped[Optional["WishlistLocation"]] = relationship(
-        back_populates="visited_location"
+    owner: Mapped["User"] = relationship(back_populates="visited_locations")
+
+    wishlist_location: Mapped["WishlistLocation"] = relationship(
+        back_populates="visited_locations"
     )

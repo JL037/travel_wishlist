@@ -1,7 +1,11 @@
 from app.database import Base
 from sqlalchemy import String, DateTime, func, Enum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .location import WishlistLocation, VisitedLocation
 
 
 class UserRole(enum.Enum):
@@ -19,3 +23,11 @@ class User(Base):
         DateTime(timezone=True), server_default=func.now()
     )
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.USER)
+
+    locations: Mapped[list["WishlistLocation"]] = relationship(
+        "WishlistLocation", back_populates="owner"
+    )
+
+    visited_locations: Mapped[list["VisitedLocation"]] = relationship(
+        "VisitedLocation", back_populates="owner"
+    )

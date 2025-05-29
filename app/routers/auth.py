@@ -1,5 +1,5 @@
-from fastapi import Depends, APIRouter, HTTPException, status, Security
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi import Depends, APIRouter, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.schema.user import UserRead, UserCreate
@@ -7,10 +7,9 @@ from app.models.users import User
 from app.database import get_db
 from app.utils.security import create_access_token, hash_password, verify_password
 from sqlalchemy.exc import IntegrityError
-from app.dependencies.auth import get_current_user, oauth2_scheme
+from app.dependencies.auth import get_current_user
 from datetime import timedelta
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
@@ -44,23 +43,22 @@ def login(
     user = db.query(User).filter(User.email == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    
+
     access_token_expires = timedelta(minutes=30)
     access_token = create_access_token(
-    user_id=user.id,  # or user.email 
-    expires_delta=access_token_expires
-)
+        user_id=user.id, expires_delta=access_token_expires  # or user.email
+    )
 
+    response = JSONResponse(
+        content={"access_token": access_token, "token_type": "bearer"}
+    )
 
-    response = JSONResponse(content={"access_token": access_token, "token_type": "bearer"})
-
-    
     response.set_cookie(
         key="access_token",
         value=access_token,
         httponly=True,
-        samesite="lax", 
-        secure=False         
+        samesite="lax",
+        secure=False,
     )
 
     return response
@@ -78,6 +76,7 @@ def read_current_user(current_user: User = Depends(get_current_user)):
 #     print("🔥🔥🔥 THIS IS DEFINITELY RUNNING 🔥🔥🔥")
 #     print("🐢 Token received manually:", token)
 #     return {"token": token}
+
 
 @router.post("/auth/logout")
 def logout():
