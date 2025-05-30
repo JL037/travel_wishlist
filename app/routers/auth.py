@@ -90,3 +90,8 @@ def logout():
     response.delete_cookie("access_token")
     print("🔴 Access token cookie deleted")
     return response
+
+
+@router.get("/api/test")
+async def test_endpoint():
+    return {"message": "Hello from backend!"}

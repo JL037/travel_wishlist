@@ -33,5 +33,4 @@ async def get_visited_with_details(
     )
 
     result = await db.execute(stmt)
-    results = result.all()
-    return results
+    return result.mappings().all()

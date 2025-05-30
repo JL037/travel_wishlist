@@ -43,7 +43,7 @@ async def read_wishlist_items(
     return result.scalars().all()
 
 
-@router.get("/wishlist/{wishlist_id}", response_model=locations.WishlistLocationOut)
+@router.get("/{wishlist_id}", response_model=locations.WishlistLocationOut)
 async def read_location_by_id(
     wishlist_id: int,
     db: AsyncSession = Depends(get_db),
@@ -61,7 +61,7 @@ async def read_location_by_id(
     return location
 
 
-@router.patch("/wishlist/{wishlist_id}", response_model=locations.WishlistLocationOut)
+@router.patch("/{wishlist_id}", response_model=locations.WishlistLocationOut)
 async def update_location(
     wishlist_id: int,
     location_data: locations.WishlistLocationUpdate,
@@ -79,7 +79,7 @@ async def update_location(
     return updated_location
 
 
-@router.delete("/wishlist/{wishlist_id}", status_code=204)
+@router.delete("/{wishlist_id}", status_code=204)
 async def delete_location(
     wishlist_id: int,
     current_user: User = Depends(get_current_user),
