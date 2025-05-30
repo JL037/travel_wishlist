@@ -1,5 +1,3 @@
-
-
 def strip_and_validate_not_empty(value: str) -> str:
     cleaned = value.strip()
     if not cleaned:

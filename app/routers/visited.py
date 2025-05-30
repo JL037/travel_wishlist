@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from app.database import get_db
 from app.models.location import VisitedLocation, WishlistLocation
 from app.schema.locations import VisitedWithDetailsOut
@@ -10,11 +11,11 @@ router = APIRouter(prefix="/visited", tags=["visited"])
 
 
 @router.get("/", response_model=list[VisitedWithDetailsOut])
-def get_visited_with_details(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+async def get_visited_with_details(
+    db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
-    results = (
-        db.query(
+    stmt = (
+        select(
             VisitedLocation.id,
             VisitedLocation.wishlist_id,
             WishlistLocation.name,
@@ -28,7 +29,9 @@ def get_visited_with_details(
             VisitedLocation.notes,
         )
         .join(WishlistLocation, VisitedLocation.wishlist_id == WishlistLocation.id)
-        .filter(VisitedLocation.owner_id == current_user.id)
-        .all()
+        .where(VisitedLocation.owner_id == current_user.id)
     )
+
+    result = await db.execute(stmt)
+    results = result.all()
     return results

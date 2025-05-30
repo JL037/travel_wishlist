@@ -48,8 +48,12 @@ class WishlistLocationBase(BaseModel):
         return validate_longitude(v)
 
 
-class WishlistLocationCreate(WishlistLocationBase):
-    pass
+class WishlistLocationCreate(BaseModel):
+    name: str
+    city: str
+    country: str | None = None
+    description: str
+    visited: bool = False
 
 
 class WishlistLocationUpdate(BaseModel):

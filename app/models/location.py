@@ -35,7 +35,7 @@ class VisitedLocation(Base):
     wishlist_id: Mapped[int] = mapped_column(
         ForeignKey("wishlist_location.id"), nullable=False
     )
-    visited_on: Mapped[DateTime] = mapped_column(DateTime)
+    visited_on: Mapped[DateTime] = mapped_column(DateTime(timezone=True))
     rating: Mapped[int] = mapped_column(Integer, nullable=True)
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 

@@ -1,10 +1,11 @@
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models.users import User, UserRole
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from jose import JWTError, jwt
 from app.core.config import settings
+from app.database import get_db
+from app.models.users import User, UserRole
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", scheme_name="BearerAuth")
 
@@ -21,7 +22,9 @@ def get_token_from_request(request: Request):
     return cookie_token
 
 
-def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
+async def get_current_user(
+    request: Request, db: AsyncSession = Depends(get_db)
+) -> User:
     token = get_token_from_request(request)
     if token is None:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -38,7 +41,10 @@ def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
     except JWTError:
         raise HTTPException(status_code=401, detail="Token is invalid")
 
-    user = db.query(User).filter(User.id == user_id).first()
+    stmt = select(User).where(User.id == int(user_id))
+    result = await db.execute(stmt)
+    user = result.scalar_one_or_none()
+
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
 
@@ -48,6 +54,6 @@ def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
 def require_admin(current_user: User = Depends(get_current_user)):
     if current_user.role != UserRole.ADMIN:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Admin priveleges required"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Admin privileges required"
         )
     return current_user
