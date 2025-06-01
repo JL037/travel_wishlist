@@ -51,7 +51,7 @@ class WishlistLocationBase(BaseModel):
 class WishlistLocationCreate(BaseModel):
     name: str
     city: str
-    country: str | None = None
+    country: str
     description: str
     visited: bool = False
 

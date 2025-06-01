@@ -6,6 +6,10 @@ export default function WishlistPage() {
   const [error, setError] = useState("");
   const [newItemName, setNewItemName] = useState("");
   const [newItemDescription, setNewItemDescription] = useState("");
+  // 🆕 Add state for city and country
+  const [newItemCity, setNewItemCity] = useState("");
+  const [newItemCountry, setNewItemCountry] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,8 +53,8 @@ export default function WishlistPage() {
         body: JSON.stringify({
           name: newItemName,
           description: newItemDescription,
-          city: newItemName,
-          country: "USA",
+          city: newItemCity,       // 🆕 Add city to payload
+          country: newItemCountry, // 🆕 Add country to payload
         }),
       });
 
@@ -62,6 +66,9 @@ export default function WishlistPage() {
       setWishlist((prev) => [...prev, newItem]);
       setNewItemName("");
       setNewItemDescription("");
+      // 🆕 Reset city and country fields
+      setNewItemCity("");
+      setNewItemCountry("");
     } catch (err) {
       console.error(err);
       alert("Failed to add wishlist item.");
@@ -171,6 +178,21 @@ export default function WishlistPage() {
           placeholder="Description"
           value={newItemDescription}
           onChange={(e) => setNewItemDescription(e.target.value)}
+          required
+        />
+        {/* 🆕 Add city and country inputs */}
+        <input
+          type="text"
+          placeholder="City"
+          value={newItemCity}
+          onChange={(e) => setNewItemCity(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Country"
+          value={newItemCountry}
+          onChange={(e) => setNewItemCountry(e.target.value)}
           required
         />
         <button type="submit">Add to Wishlist</button>

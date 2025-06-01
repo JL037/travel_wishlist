@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import MapView from "./MapView"; // 👉 Import the map!
+
+type Location = {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+};
 
 export default function VisitedLocationsPage() {
-  const [visitedLocations, setVisitedLocations] = useState<any[]>([]);
+  const [visitedLocations, setVisitedLocations] = useState<Location[]>([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -14,39 +22,44 @@ export default function VisitedLocationsPage() {
     }
 
     fetch("http://localhost:8000/visited", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-    },
-})
-  .then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch visited locations.");
-    return res.json();
-  })
-  .then((data) => {
-    setVisitedLocations(data);  // no need to filter again
-  })
-  .catch((err) => {
-    console.error(err);
-    setError("Failed to fetch visited locations.");
-  });
- []
-})
-    const handleGoToWishlist = () => {
-  navigate("/wishlist");
-};
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch visited locations.");
+        return res.json();
+      })
+      .then((data) => {
+        // Map only necessary fields for the map
+        const cleanedData = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          latitude: item.latitude,
+          longitude: item.longitude,
+        }));
+        setVisitedLocations(cleanedData);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to fetch visited locations.");
+      });
+  }, []);
+
+  const handleGoToWishlist = () => navigate("/wishlist");
 
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div>
-    <div>
-    <h1>Visited Locations</h1>
-    <button onClick={handleGoToWishlist}>Go to Wishlist</button>
+    <div className="visited-locations-container">
+      <h1>Visited Locations</h1>
+      <button onClick={handleGoToWishlist}>Go to Wishlist</button>
 
-    {/* the rest of your code... */}
-  </div>
+      {/* The Map! */}
+      <div style={{ marginTop: "1rem" }}>
+        <MapView locations={visitedLocations} />
+      </div>
 
-      <div>
+      {/* List of visited locations below */}
+      <div style={{ marginTop: "1rem" }}>
         {visitedLocations.length === 0 ? (
           <p>No locations visited yet.</p>
         ) : (
@@ -61,9 +74,7 @@ export default function VisitedLocationsPage() {
                 color: "#ffffff",
               }}
             >
-              <span>
-                {item.name} - {item.description} - Visited
-              </span>
+              <span>{item.name} - Visited</span>
             </div>
           ))
         )}

@@ -1,59 +1,89 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AuthPage.css"; // Make sure you have this file
+import "./AuthPage.css";
 
 export default function AuthPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const url = isLogin
+      ? "http://localhost:8000/auth/login"
+      : "http://localhost:8000/auth/register";
+
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ username, password }),
       });
 
-      if (!response.ok) throw new Error("Login failed!");
+      if (!response.ok) {
+        throw new Error(isLogin ? "Login failed!" : "Registration failed!");
+      }
+
       const data = await response.json();
-      localStorage.setItem("access_token", data.access_token);
-      navigate("/profile");
+
+      if (isLogin) {
+        localStorage.setItem("access_token", data.access_token);
+        navigate("/profile");
+      } else {
+        setIsLogin(true); // Switch to login after successful registration
+      }
+
+      setError("");
     } catch (err) {
       console.error(err);
-      setError("Login failed. Please check your credentials.");
+      setError(
+        isLogin
+          ? "Login failed. Please check your credentials."
+          : "Registration failed. Please try again."
+      );
     }
   };
 
   return (
-  <div className="login-container">
-    <div className="login-box">
-      <img src="/globe.jpg" alt="Globe" className="globe-icon" />
-      <h1>Welcome back, Explorer!</h1>
-      <p>Log in to continue your travel dreams 🌍</p>
+    <div className="login-container">
+      <div className="login-box">
+        <img src="/globe.jpg" alt="Globe" className="globe-icon" />
+        <h1>{isLogin ? "Welcome back, Explorer!" : "Create your account"}</h1>
+        <p>{isLogin ? "Log in to continue your travel dreams 🌍" : "Join us and start your journey 🌟"}</p>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">{isLogin ? "Login" : "Register"}</button>
+        </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <p>
+          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+          <button
+            type="button"
+            onClick={() => setIsLogin(!isLogin)}
+            style={{ background: "none", border: "none", color: "blue", cursor: "pointer" }}
+          >
+            {isLogin ? "Register here" : "Login here"}
+          </button>
+        </p>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
-  </div>
-);
+  );
 }

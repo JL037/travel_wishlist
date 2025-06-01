@@ -1,0 +1,63 @@
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background-image: url('/profilemap.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #121212;
+  color: #fff;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  backdrop-filter: blur(0px); /* Adds a nice blurred effect */
+  background-color: rgba(0, 0, 0, 0.2); /* Dark overlay for text readability */
+}
+
+.profile-card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+
+.profile-card h1 {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.profile-card p {
+  margin: 0.5rem 0;
+}
+
+.profile-card button {
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.profile-card .btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.profile-card .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.profile-card .btn-danger {
+  background-color: #dc3545;
+  color: white;
+}

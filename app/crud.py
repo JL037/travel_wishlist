@@ -82,6 +82,8 @@ async def update_wishlist_location(
                 wishlist_id=location.id,
                 owner_id=user_id,
                 visited_on=datetime.now(timezone.utc),
+                latitude=location.latitude,
+                longitude=location.longitude, 
             )
             db.add(visited)
             await db.commit()

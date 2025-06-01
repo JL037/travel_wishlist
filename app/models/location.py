@@ -38,6 +38,9 @@ class VisitedLocation(Base):
     visited_on: Mapped[DateTime] = mapped_column(DateTime(timezone=True))
     rating: Mapped[int] = mapped_column(Integer, nullable=True)
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    latitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    longitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+
 
     owner: Mapped["User"] = relationship(back_populates="visited_locations")
 

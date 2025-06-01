@@ -47,6 +47,12 @@ async def login(
     stmt = select(User).where(User.email == form_data.username)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
+    print(f"Form username: {form_data.username}")
+    print(f"Form password: {form_data.password}")
+    print(f"User in DB: {user}")
+    if user:
+        print(f"User hashed password: {user.hashed_password}")
+        print(f"Password match? {verify_password(form_data.password, user.hashed_password)}")
 
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")

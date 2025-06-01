@@ -17,6 +17,8 @@ async def get_lat_lon(
         "format": "json",
         "limit": 1,
     }
+    if country:
+        pass
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(NOMINATIM_URL, params=params, headers=HEADERS)
