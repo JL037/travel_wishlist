@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schema.user import UserRead, UserCreate
+from app.schema.user import UserRead, UserCreate, LoginData
 from app.models.users import User
 from app.database import get_db
 from app.utils.security import create_access_token, hash_password, verify_password
@@ -26,7 +26,7 @@ async def register_user(user_data: UserCreate, db: AsyncSession = Depends(get_db
 
     hashed_pwd = hash_password(user_data.password)
     new_user = User(
-        email=user_data.email, hashed_password=hashed_pwd, role=user_data.role
+        email=user_data.email, username=user_data.username, hashed_password=hashed_pwd, role=user_data.role
     )
 
     try:
@@ -41,24 +41,17 @@ async def register_user(user_data: UserCreate, db: AsyncSession = Depends(get_db
 
 
 @router.post("/login")
-async def login(
-    form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)
-):
-    stmt = select(User).where(User.email == form_data.username)
+async def login(data: LoginData, db: AsyncSession = Depends(get_db)):
+    stmt = select(User).where(User.email == data.username)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
-    print(f"Form username: {form_data.username}")
-    print(f"Form password: {form_data.password}")
-    print(f"User in DB: {user}")
-    if user:
-        print(f"User hashed password: {user.hashed_password}")
-        print(f"Password match? {verify_password(form_data.password, user.hashed_password)}")
 
-    if not user or not verify_password(form_data.password, user.hashed_password):
+    if not user or not verify_password(data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
+    
     access_token_expires = timedelta(minutes=30)
     access_token = create_access_token(
-        user_id=user.id, expires_delta=access_token_expires  # or user.email
+        user_id=user.id, expires_delta=access_token_expires
     )
 
     response = JSONResponse(

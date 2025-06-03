@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import MapView from "./MapView"; // 👉 Import the map!
+import MapView from "./MapView";
 
 type Location = {
   id: number;
@@ -10,10 +10,37 @@ type Location = {
 };
 
 export default function VisitedLocationsPage() {
+  // State
   const [visitedLocations, setVisitedLocations] = useState<Location[]>([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // 🚀 Function to delete visited location
+  const handleDeleteVisited = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this visited location?")) return;
+
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Not logged in!");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8000/visited/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) throw new Error("Failed to delete visited location.");
+
+      setVisitedLocations((prev) => prev.filter((loc) => loc.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete visited location.");
+    }
+  };
+
+  // 🚀 useEffect to fetch data
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) {
@@ -29,7 +56,6 @@ export default function VisitedLocationsPage() {
         return res.json();
       })
       .then((data) => {
-        // Map only necessary fields for the map
         const cleanedData = data.map((item: any) => ({
           id: item.id,
           name: item.name,
@@ -53,12 +79,12 @@ export default function VisitedLocationsPage() {
       <h1>Visited Locations</h1>
       <button onClick={handleGoToWishlist}>Go to Wishlist</button>
 
-      {/* The Map! */}
+      {/* Map display */}
       <div style={{ marginTop: "1rem" }}>
         <MapView locations={visitedLocations} />
       </div>
 
-      {/* List of visited locations below */}
+      {/* List of visited locations with delete buttons */}
       <div style={{ marginTop: "1rem" }}>
         {visitedLocations.length === 0 ? (
           <p>No locations visited yet.</p>
@@ -75,6 +101,12 @@ export default function VisitedLocationsPage() {
               }}
             >
               <span>{item.name} - Visited</span>
+              <button
+                onClick={() => handleDeleteVisited(item.id)}
+                style={{ marginLeft: "0.5rem" }}
+              >
+                Delete
+              </button>
             </div>
           ))
         )}

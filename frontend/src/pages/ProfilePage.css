@@ -9,55 +9,53 @@ body {
   color: #fff;
 }
 
-.profile-container {
+.profile-navbar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
-  backdrop-filter: blur(0px); /* Adds a nice blurred effect */
-  background-color: rgba(0, 0, 0, 0.2); /* Dark overlay for text readability */
-}
-
-.profile-card {
   background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  max-width: 400px;
+  color: #fff;
+  padding: 0.75rem 1rem;
   width: 100%;
-  text-align: center;
+  position: fixed; /* Stick to top! */
+  top: 0;
+  left: 0;
 }
 
-
-.profile-card h1 {
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
+.profile-name {
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
-.profile-card p {
-  margin: 0.5rem 0;
-}
-
-.profile-card button {
-  margin: 0.5rem 0;
-  padding: 0.5rem 1rem;
+.profile-links button,
+.logout button {
+  background: none;
   border: none;
-  border-radius: 5px;
-  font-weight: 600;
+  color: #fff;
+  margin: 0 0.5rem;
   cursor: pointer;
+  font-size: 1rem;
 }
 
-.profile-card .btn-primary {
-  background-color: #007bff;
-  color: white;
+.profile-links button:hover,
+.logout button:hover {
+  text-decoration: underline;
 }
 
-.profile-card .btn-secondary {
-  background-color: #6c757d;
-  color: white;
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
 }
 
-.profile-card .btn-danger {
-  background-color: #dc3545;
-  color: white;
+.weather-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
+

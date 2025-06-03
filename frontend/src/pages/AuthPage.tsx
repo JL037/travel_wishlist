@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./AuthPage.css";
 
 export default function AuthPage() {
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,6 +12,7 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const url = isLogin
       ? "http://localhost:8000/auth/login"
       : "http://localhost:8000/auth/register";
@@ -18,8 +20,10 @@ export default function AuthPage() {
     try {
       const response = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ username, password }),
+        headers: { "Content-Type": "application/json" },
+        body: isLogin
+          ? JSON.stringify({ username, password })
+          : JSON.stringify({ email, username, password }),
       });
 
       if (!response.ok) {
@@ -32,7 +36,11 @@ export default function AuthPage() {
         localStorage.setItem("access_token", data.access_token);
         navigate("/profile");
       } else {
-        setIsLogin(true); // Switch to login after successful registration
+        // Registration was successful, switch to login
+        setIsLogin(true);
+        setEmail("");
+        setUsername("");
+        setPassword("");
       }
 
       setError("");
@@ -51,9 +59,22 @@ export default function AuthPage() {
       <div className="login-box">
         <img src="/globe.jpg" alt="Globe" className="globe-icon" />
         <h1>{isLogin ? "Welcome back, Explorer!" : "Create your account"}</h1>
-        <p>{isLogin ? "Log in to continue your travel dreams 🌍" : "Join us and start your journey 🌟"}</p>
+        <p>
+          {isLogin
+            ? "Log in to continue your travel dreams 🌍"
+            : "Join us and start your journey 🌟"}
+        </p>
 
         <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          )}
           <input
             type="text"
             placeholder="Username"
@@ -76,7 +97,12 @@ export default function AuthPage() {
           <button
             type="button"
             onClick={() => setIsLogin(!isLogin)}
-            style={{ background: "none", border: "none", color: "blue", cursor: "pointer" }}
+            style={{
+              background: "none",
+              border: "none",
+              color: "blue",
+              cursor: "pointer",
+            }}
           >
             {isLogin ? "Register here" : "Login here"}
           </button>

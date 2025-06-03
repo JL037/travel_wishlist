@@ -6,7 +6,7 @@ def strip_and_validate_not_empty(value: str) -> str:
 
 
 def validate_country_format(value: str) -> str:
-    if not value.isalpha() or len(value.strip()) < 2:
+    if not value.replace(" ","").isalpha() or len(value.strip()) < 2:
         raise ValueError(
             "Country name must contain only letters and must be at least 2 characters"
         )

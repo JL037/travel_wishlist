@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .location import WishlistLocation, VisitedLocation
+    from app.models import UserSavedCity
 
 
 class UserRole(enum.Enum):
@@ -18,6 +19,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(String, index=True, nullable=False)
+    username: Mapped[str] = mapped_column(String, index=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     created_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
@@ -31,3 +33,5 @@ class User(Base):
     visited_locations: Mapped[list["VisitedLocation"]] = relationship(
         "VisitedLocation", back_populates="owner"
     )
+
+    saved_cities: Mapped[list["UserSavedCity"]] = relationship(back_populates="user", cascade="all, delete-orphan")

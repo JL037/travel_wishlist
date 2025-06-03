@@ -1,5 +1,15 @@
+import sentry_sdk
+from sentry_sdk.integrations.fastapi import FastApiIntegration
+from app.core.config import settings
+
+sentry_sdk.init(
+    dsn= settings.SENTRY_DSN,  # 🟡 Replace this with the real DSN from Sentry dashboard!
+    integrations=[FastApiIntegration()],
+    traces_sample_rate=1.0,  # 🟡 Performance tracing (1.0 = 100%, lower this in production!)
+    environment="development",  # or
+)
 from fastapi import FastAPI
-from app.routers import wishlist, auth, visited
+from app.routers import wishlist, auth, visited, weather, user_saved_cities
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,11 +27,17 @@ app.add_middleware(
 def read_root():
     return {"message": "Welcome to the Travel Wishlist API!"}
 
+@app.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0  # This will intentionally crash!
+
+
 
 app.include_router(wishlist.router)
 app.include_router(auth.router)
 app.include_router(visited.router)
-
+app.include_router(weather.router, prefix="/api")
+app.include_router(user_saved_cities.router, prefix="/api", tags=["user-saved-cities"])
 
 def custom_openapi():
     if app.openapi_schema:

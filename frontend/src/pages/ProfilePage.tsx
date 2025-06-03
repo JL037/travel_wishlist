@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProfilePage.css";
+import WeatherWidget from "../components/WeatherWidget";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
@@ -10,55 +11,55 @@ export default function ProfilePage() {
     const token = localStorage.getItem("access_token");
     if (!token) {
       alert("Not logged in!");
-      window.location.href = "/"; // Redirect to login
+      navigate("/");
       return;
     }
 
     fetch("http://localhost:8000/auth/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((data) => setProfile(data))
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        return res.json();
+      })
+      .then(setProfile)
       .catch((err) => {
         console.error("Error fetching profile:", err);
         alert("Failed to fetch profile.");
       });
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    window.location.href = "/";
+    navigate("/");
   };
 
-  const handleGoToWishlist = () => {
-    navigate("/wishlist");
-  };
+  const handleGoToWishlist = () => navigate("/wishlist");
+  const handleGoToVisited = () => navigate("/visited");
 
-  const handleGoToVisited = () => {
-    navigate("/visited-locations");
-  };
-
-  if (!profile) return <p style={{ textAlign: "center" }}>Loading profile...</p>;
+  if (!profile) {
+    return <p style={{ textAlign: "center" }}>Loading profile...</p>;
+  }
 
   return (
-    <div className="profile-container">
-      <div className="profile-card">
-        <h1>Profile</h1>
-        <p><strong>Email:</strong> {profile.email}</p>
-        <p><strong>Role:</strong> {profile.role}</p>
-        <p><strong>Created at:</strong> {new Date(profile.created_at).toLocaleString()}</p>
+    <div>
+      {/* Navbar */}
+      <div className="profile-navbar">
+        <div className="profile-name">Adventurer {profile.username}</div>
+        <div className="profile-links">
+          <button onClick={handleGoToWishlist}>Go to My Wishlist</button>
+          <button onClick={handleGoToVisited}>Go to Visited Locations</button>
+        </div>
+        <div className="logout">
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      </div>
 
-        <button className="btn-primary" onClick={handleGoToWishlist}>
-          Go to My Wishlist
-        </button>
-        <button className="btn-secondary" onClick={handleGoToVisited}>
-          Go to Visited Locations
-        </button>
-        <button className="btn-danger" onClick={handleLogout}>
-          Logout
-        </button>
+      {/* Profile Content */}
+      <div className="profile-content">
+        <div className="weather-container">
+          <WeatherWidget />
+        </div>
       </div>
     </div>
   );
