@@ -6,7 +6,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .location import WishlistLocation, VisitedLocation
-    from app.models import UserSavedCity
+    from app.models.user_saved_city import UserSavedCity
+    from app.models.travel_plan import TravelPlan
 
 
 class UserRole(enum.Enum):
@@ -35,3 +36,4 @@ class User(Base):
     )
 
     saved_cities: Mapped[list["UserSavedCity"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    travel_plans: Mapped[list["TravelPlan"]] = relationship(back_populates="user")
