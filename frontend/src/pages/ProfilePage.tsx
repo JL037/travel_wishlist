@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProfilePage.css";
 import WeatherWidget from "../components/WeatherWidget";
+import TravelPlanner from "../components/TravelPlanner";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
@@ -38,12 +39,15 @@ export default function ProfilePage() {
   const handleGoToVisited = () => navigate("/visited");
 
   if (!profile) {
-    return <p style={{ textAlign: "center" }}>Loading profile...</p>;
+    return (
+      <div style={{ textAlign: "center", color: "#aaa" }}>
+        <p>Loading profile data...</p>
+      </div>
+    );
   }
 
   return (
     <div>
-      {/* Navbar */}
       <div className="profile-navbar">
         <div className="profile-name">Adventurer {profile.username}</div>
         <div className="profile-links">
@@ -55,10 +59,12 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Profile Content */}
       <div className="profile-content">
         <div className="weather-container">
           <WeatherWidget />
+        </div>
+        <div className="travel-planner-container">
+          <TravelPlanner />
         </div>
       </div>
     </div>

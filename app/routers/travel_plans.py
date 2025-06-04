@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.travel_plan import TravelPlan
 from app.models.users import User
@@ -22,3 +22,11 @@ async def create_plan(plan: TravelPlanCreate, db: AsyncSession = Depends(get_db)
 async def get_plans(db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
     result = await db.execute(select(TravelPlan).where(TravelPlan.user_id == current_user.id))
     return result.scalars().all()
+
+@router.delete("/travel-plans/{plan_id}", status_code=204)
+async def delete_plan(plan_id: int, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    plan = await db.get(TravelPlan, plan_id)
+    if not plan or plan.user_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Not found")
+    await db.delete(plan)
+    await db.commit()

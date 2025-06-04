@@ -3,6 +3,7 @@ import { getSavedCities, saveCity, deleteCity } from "../api/savedCities";
 
 export default function WeatherWidget() {
   const [cityInput, setCityInput] = useState("");
+  const [countryInput, setCountryInput] = useState(""); // 🟩 New: country input
   const [weather, setWeather] = useState<any>(null);
   const [error, setError] = useState("");
   const [savedCities, setSavedCities] = useState<{ id: number; city: string }[]>([]);
@@ -18,7 +19,15 @@ export default function WeatherWidget() {
 
   const fetchWeather = async (city: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/weather?city=${city}&units=imperial`);
+      // 🟩 If country is set, add it to the URL
+      const queryParams = new URLSearchParams({ city });
+      if (countryInput.trim()) {
+        queryParams.append("country", countryInput.trim().toUpperCase());
+      }
+
+      const response = await fetch(
+        `http://localhost:8000/api/weather?${queryParams.toString()}`
+      );
       if (!response.ok) throw new Error("Failed to fetch weather");
       const data = await response.json();
       setWeather(data);
@@ -37,7 +46,8 @@ export default function WeatherWidget() {
       await saveCity(cityInput, token);
       const updated = await getSavedCities(token);
       setSavedCities(updated);
-      setCityInput(""); // Clear input
+      setCityInput("");
+      setCountryInput(""); // 🟩 Clear country input too!
       setError("");
     } catch {
       setError("Failed to save city.");
@@ -69,6 +79,12 @@ export default function WeatherWidget() {
           value={cityInput}
           onChange={(e) => setCityInput(e.target.value)}
         />
+        <input
+          type="text"
+          placeholder="Country code (e.g., US)"
+          value={countryInput}
+          onChange={(e) => setCountryInput(e.target.value)}
+        />
         <button onClick={handleSaveCity}>Save City</button>
       </div>
 
@@ -88,7 +104,7 @@ export default function WeatherWidget() {
       {error && <p>{error}</p>}
       {weather && (
         <div>
-          <h3>{weather.city}</h3>
+          <h3>{weather.city}, {weather.country}</h3>
           <p>Temperature: {weather.temperature}°F</p>
           <p>{weather.description}</p>
           <img
@@ -100,4 +116,3 @@ export default function WeatherWidget() {
     </div>
   );
 }
-

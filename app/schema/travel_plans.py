@@ -1,14 +1,13 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 
 class TravelPlanCreate(BaseModel):
-    date: date
+    start_date: datetime
+    end_date: datetime
     location: str
     notes: str | None = None
 
-class TravelPlanOut(BaseModel):
+class TravelPlanOut(TravelPlanCreate):
     id: int
-    date: date
-    location: str
-    notes: str | None
+    
     

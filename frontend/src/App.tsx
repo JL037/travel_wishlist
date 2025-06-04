@@ -4,6 +4,7 @@ import ProfilePage from "./pages/ProfilePage";
 import WishlistPage from "./pages/WishlistPage";
 import WishlistItemPage from "./pages/WishlistItemPage";
 import VisitedLocationsPage from "./pages/VisitedLocationsPage";
+import TestCalendar from "./components/TestCalendar";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/wishlist/:id" element={<WishlistItemPage />} />
         <Route path="/visited" element={<VisitedLocationsPage />} />
+        <Route path="/test-calendar" element={<TestCalendar />} />
 
       </Routes>
     </BrowserRouter>

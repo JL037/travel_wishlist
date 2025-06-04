@@ -1,0 +1,146 @@
+/* Overall container for your travel planner */
+.travel-planner-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 1rem auto;
+  overflow-x: hidden; /* 👈 Remove horizontal scrolling */
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Calendar itself */
+.rbc-calendar {
+  width: 100%;
+  min-width: 0; /* 👈 No forced width */
+  height: 600px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/* Week view: main grid area */
+.rbc-time-content {
+  width: 100%;
+  min-width: 0; /* 👈 Let it be flexible */
+  overflow-x: hidden; /* 👈 Remove horizontal scroll bars */
+  display: flex;
+  box-sizing: border-box;
+}
+
+/* Week view: header row above grid */
+.rbc-time-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.rbc-time-header-content {
+  flex: 0 1 auto;  /* 👈 let it size to content! */
+}
+
+
+/* Individual day + gutter slots (make them flexible) */
+.rbc-time-content > .rbc-time-gutter,
+.rbc-time-content > .rbc-day-slot {
+  min-width: 0;         /* 👈 Remove forced min-width */
+  flex: 1 1 auto;       /* 👈 Let them grow/shrink as needed */
+  box-sizing: border-box;
+}
+
+/* Style the toolbar for clarity */
+.rbc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.rbc-toolbar button {
+  all: unset;
+  display: inline-block;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  margin: 0 0.2rem;
+  background: #e0e0e0;
+  border-radius: 4px;
+  font: inherit;
+  color: #333;
+  border: 1px solid #ccc;
+  transition: background 0.2s ease-in-out;
+}
+
+.rbc-toolbar button:hover {
+  background: #d0d0d0;
+}
+
+.rbc-toolbar-label {
+  color: #333;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Month header (if visible) */
+.rbc-month-header {
+  font-weight: bold;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Day headers */
+.rbc-header {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Events styling */
+.rbc-event {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;  
+  background-color: #1976d2 !important;
+  color: #fff !important;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 0.8rem;
+}
+
+.rbc-day-slot {
+  overflow: hidden;  /* 👈 Hide any child event that tries to overflow */
+  position: relative; /* 👈 Ensure child events respect their container */
+}
+
+.rbc-allday-cell {
+  flex: 1 1 auto;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Style for Agenda view cells */
+.rbc-agenda-event-cell {
+  color: #333 !important; /* Dark text */
+  font-weight: bold;
+  background: #f9f9f9; /* Light background for visibility */
+  border-bottom: 1px solid #ddd; /* Optional: divider for clarity */
+}
+
+.rbc-agenda-time-cell {
+  color: #333 !important; /* Dark text */
+  font-weight: bold;
+  background: #f9f9f9; /* Light background for visibility */
+  border-bottom: 1px solid #ddd;
+}
+
+.rbc-agenda-date-cell {
+  color: #333 !important; /* Dark text */
+  font-weight: bold;
+  background: #f9f9f9; /* Light background for visibility */
+  border-bottom: 1px solid #ddd;
+}

@@ -9,6 +9,7 @@ body {
   color: #fff;
 }
 
+/* Navbar */
 .profile-navbar {
   display: flex;
   justify-content: space-between;
@@ -20,6 +21,7 @@ body {
   position: fixed; /* Stick to top! */
   top: 0;
   left: 0;
+  z-index: 10; /* Keep on top */
 }
 
 .profile-name {
@@ -42,20 +44,52 @@ body {
   text-decoration: underline;
 }
 
+/* Profile Content Container */
 .profile-content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  margin-top: 4rem; /* Navbar height + margin */
 }
 
+/* Weather Widget */
 .weather-container {
   background-color: rgba(0, 0, 0, 0.6);
-  padding: 1rem 2rem;
+  padding: 1rem;
   border-radius: 8px;
-  margin-top: 1rem;
+  flex: 1;
+  min-width: 300px;
   color: #fff;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* Travel Planner Widget */
+.travel-planner-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 2; /* Give it more width than weather */
+  min-width: 400px;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons inside containers */
+.weather-container button,
+.travel-planner-container button {
+  background-color: #0077b6;
+  color: #fff;
+  border: none;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.weather-container button:hover,
+.travel-planner-container button:hover {
+  background-color: #023e8a;
+}
