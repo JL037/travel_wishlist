@@ -1,30 +1,42 @@
 .pricing-container {
   text-align: center;
   max-width: 800px;
-  margin: 3rem auto 0 auto;
-  padding: 20px;
+  margin: 2rem auto 0 auto;
+  padding: 5px;
   box-sizing: border-box;
+}
+.pricing-header-box {
+  background-color: rgba(0, 0, 0, 0.7); /* same as your .tier */
+  color: #fff;                         /* white text for good contrast */
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  margin: 1rem auto;                   /* add vertical spacing */
+  max-width: 600px;                    /* prevent it from stretching too wide */
 }
 
 .pricing-title {
-  color: #000;
-  font-size: 2rem;
-  margin-bottom: 5px;
+  font-size: 2.5rem;   /* Larger heading */
+  color: #f2efef;         /* Black for contrast, or consider using #333 for softer contrast */
+  margin: 1rem 0 0.5rem 0;
+  text-align: center;
+  font-weight: 700;    /* Bold for emphasis */
 }
 
 .pricing-subtitle {
-  color: #000;
-  margin: 0 auto 5px auto;
+  font-size: 1.2rem;   /* Smaller than title, but clear */
+  color: #f2efef;         /* Dark grey for softer tone */
+  margin: 0 auto 1rem auto;  /* Add bottom margin for spacing below subtitle */
   max-width: 60%;
-  line-height: 1.4;
-  word-break: break-word;
+  text-align: center;
+  line-height: 1.5;
 }
 
 .tier {
   background-color: #333;
   border-radius: 8px;
-  margin: 20px auto 7px auto;
-  padding: 20px;
+  margin: 10px auto 7px auto;
+  padding: 8px;
   width: 80%;
   max-width: 400px;
   color: #fff;
@@ -50,9 +62,9 @@
 /* Remove the box styling from thank-you, since it will be inside .tier */
 .thank-you {
   background-color: #333;
-  border-radius: 8px;
+  border-radius: 6px;
   margin: 10px auto;
-  padding: 20px;
+  padding: 10px;
   width: 80%;
   max-width: 400px;
   color: #fff;

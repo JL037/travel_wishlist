@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import date, datetime
+from datetime import datetime
 
 class TravelPlanCreate(BaseModel):
     start_date: datetime

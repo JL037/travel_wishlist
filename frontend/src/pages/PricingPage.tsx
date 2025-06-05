@@ -1,22 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./PricingPage.css";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 import Navbar from "../components/Navbar";
 
 export default function PricingPage() {
   const [thankYou, setThankYou] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
+  useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const res = await fetchWithAuth("http://localhost:8000/auth/me");
+          if (!res.ok) throw new Error("Failed to fetch profile");
+          const data = await res.json();
+          setUser(data);
+        } catch (err) {
+          console.error(err);
+          alert("Failed to fetch profile. Please refresh!");
+        }
+      };
+      fetchProfile();
+    }, []);
   const handleClick = () => {
     setThankYou(true);
   };
 
   return (
     <div>
-      <Navbar /> {/* 🔥 Navbar at the top */}
+      <Navbar username={user?.username} /> {/* 🔥 Navbar at the top */}
+    <div className="pricing-header-box">
       <div className="pricing-container">
         <h1 className="pricing-title">Pricing</h1>
         <p className="pricing-subtitle">
-          Let’s keep it simple and fun! No payments here—just support me and this project:
+          Let’s keep it simple and fun! No payments here—just support me and this project.
         </p>
+    </div>
 
         <div className="tier" onClick={handleClick}>
           <h2>Free Tier</h2>

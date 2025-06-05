@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 from pydantic import PostgresDsn, ConfigDict
 
 class Settings(BaseSettings):
-    DATABASE_URL: PostgresDsn
+    DATABASE_URL: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     SENTRY_DSN: str

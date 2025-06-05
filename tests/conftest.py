@@ -1,36 +1,36 @@
-import pytest
-from starlette.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# import pytest
+# from starlette.testclient import TestClient
+# from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+# from sqlalchemy.orm import sessionmaker
+# from app.main import app
+# from app.database import Base, get_db
+# from app.core.config import settings
 
-from app.main import app
-from app.database import Base, get_db
-from app.core.config import settings
+# TEST_DATABASE_URL = settings.TEST_DATABASE_URL
 
-# ✅ Use test DB from BaseSettings
-TEST_DATABASE_URL = settings.TEST_DATABASE_URL
+# # Create async engine + session
+# engine = create_async_engine(TEST_DATABASE_URL, future=True, echo=False)
+# TestingSessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
-# ✅ Create test engine + session
-engine = create_engine(TEST_DATABASE_URL)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# # Override get_db to use AsyncSession
+# async def override_get_db():
+#     async with TestingSessionLocal() as db:
+#         yield db
 
+# app.dependency_overrides[get_db] = override_get_db
 
-# ✅ Override the real DB dependency
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# @pytest.fixture(scope="function")
+# def client():
+#     # Drop and recreate tables before each test
+#     import asyncio
 
+#     async def _reset_db():
+#         async with engine.begin() as conn:
+#             await conn.run_sync(Base.metadata.drop_all)
+#             await conn.run_sync(Base.metadata.create_all)
 
-app.dependency_overrides[get_db] = override_get_db
+#     asyncio.run(_reset_db())  # Run the async reset synchronously here
 
-
-# ✅ Clean DB before each test
-@pytest.fixture(scope="function")
-def client():
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    with TestClient(app) as c:
-        yield c
+#     # Return the TestClient
+#     with TestClient(app) as c:
+#         yield c

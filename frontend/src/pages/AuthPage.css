@@ -1,9 +1,24 @@
 /* AuthPage.css */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden; /* 🟩 Avoid horizontal overflow */
+  box-sizing: border-box;
+}
+
 #auth-page {
   background-image: url("/map.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100vh; /* full viewport height */
+  width: 100vw;  /* full viewport width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 #auth-page::before {
@@ -14,34 +29,19 @@
   z-index: 1;
 }
 
-
-html, body, #root {
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-}
-
+/* Remove only the duplicate left-side background */
 .login-container {
+  background: transparent; /* ✅ Remove background image and color from .login-container */
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-image: url("/map.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-}
-
-.login-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  width: 100%; /* ✅ ensure full width to avoid left peeking */
+  height: 100%; /* ✅ ensure full height to avoid top/bottom peeking */
   z-index: 1;
 }
 
+/* Keep .login-box and overlay styling */
 .login-box {
   position: relative;
   z-index: 2;

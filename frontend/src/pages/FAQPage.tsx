@@ -1,10 +1,29 @@
 import Navbar from "../components/Navbar";
 import "./FAQPage.css"; // We'll create this next!
-
+import { useEffect, useState } from "react";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 export default function FAQPage() {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetchWithAuth("http://localhost:8000/auth/me");
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to fetch profile. Please refresh!");
+      }
+    };
+    fetchProfile();
+  }, []);
+
+
   return (
     <div>
-      <Navbar /> {/* Include the Navbar at the top! */}
+      <Navbar username={user?.username} /> {/* Include the Navbar at the top! */}
       <div className="faq-container">
         <h1 className="faq-title">Frequently Asked Questions</h1>
         <div className="faq-list">

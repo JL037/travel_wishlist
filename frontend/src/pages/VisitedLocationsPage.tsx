@@ -12,8 +12,47 @@ type Location = {
 };
 
 export default function VisitedLocationsPage() {
+  const [user, setUser] = useState<any>(null);
   const [visitedLocations, setVisitedLocations] = useState<Location[]>([]);
   const [error, setError] = useState("");
+
+  // Fetch profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetchWithAuth("http://localhost:8000/auth/me");
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to fetch profile. Please refresh!");
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  // Fetch visited locations
+  useEffect(() => {
+    const fetchVisitedLocations = async () => {
+      try {
+        const res = await fetchWithAuth("http://localhost:8000/visited");
+        if (!res.ok) throw new Error("Failed to fetch visited locations.");
+        const data = await res.json();
+        const cleanedData = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          latitude: item.latitude,
+          longitude: item.longitude,
+        }));
+        setVisitedLocations(cleanedData);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch visited locations.");
+      }
+    };
+    fetchVisitedLocations();
+  }, []);
 
   const handleDeleteVisited = async (id: number) => {
     if (!confirm("Are you sure you want to delete this visited location?")) return;
@@ -30,33 +69,12 @@ export default function VisitedLocationsPage() {
     }
   };
 
-  useEffect(() => {
-    fetchWithAuth("http://localhost:8000/visited")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch visited locations.");
-        return res.json();
-      })
-      .then((data) => {
-        const cleanedData = data.map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          latitude: item.latitude,
-          longitude: item.longitude,
-        }));
-        setVisitedLocations(cleanedData);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Failed to fetch visited locations.");
-      });
-  }, []);
-
   if (error)
     return <p style={{ color: "red", textAlign: "center" }}>{error}</p>;
 
   return (
     <div>
-      <Navbar />
+      <Navbar username={user?.username} />
       <div className="visited-page-container">
         <div className="visited-list-container">
           <h2>Visited Locations</h2>
