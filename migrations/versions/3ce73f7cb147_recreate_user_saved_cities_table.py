@@ -19,13 +19,17 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-  op.create_table(
-    'user_saved_cities',
-    sa.Column('id', sa.Integer(), primary_key=True),
-    sa.Column('user_id', sa.Integer(), sa.ForeignKey('users.id', ondelete='CASCADE')),
-    sa.Column('city', sa.String(), nullable=False),
-)
+    """Upgrade schema."""
+    # The table already exists in the Railway database, so skip creating it again.
+    # op.create_table(
+    #     'user_saved_cities',
+    #     sa.Column('id', sa.Integer(), primary_key=True),
+    #     sa.Column('user_id', sa.Integer(), sa.ForeignKey('users.id', ondelete='CASCADE')),
+    #     sa.Column('city', sa.String(), nullable=False),
+    # )
+    pass
 
 
 def downgrade() -> None:
+    """Downgrade schema."""
     op.drop_table('user_saved_cities')

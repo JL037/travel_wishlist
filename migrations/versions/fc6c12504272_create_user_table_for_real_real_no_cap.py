@@ -10,7 +10,6 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision: str = "fc6c12504272"
@@ -38,8 +37,10 @@ def upgrade() -> None:
     )
     op.create_index(op.f("ix_users_email"), "users", ["email"], unique=False)
     op.create_index(op.f("ix_users_id"), "users", ["id"], unique=False)
-    op.drop_table("visited_location")
-    op.drop_table("wishlist_location")
+
+    # These tables likely don’t exist on Railway, so let’s comment them out
+    # op.drop_table("visited_location")
+    # op.drop_table("wishlist_location")
     # ### end Alembic commands ###
 
 
@@ -61,21 +62,20 @@ def downgrade() -> None:
         ),
         sa.Column(
             "added_on",
-            postgresql.TIMESTAMP(timezone=True),
+            sa.TIMESTAMP(timezone=True),
             server_default=sa.text("now()"),
             autoincrement=False,
             nullable=False,
         ),
         sa.Column("visited", sa.BOOLEAN(), autoincrement=False, nullable=False),
         sa.PrimaryKeyConstraint("id", name="wishlist_location_pkey"),
-        postgresql_ignore_search_path=False,
     )
     op.create_table(
         "visited_location",
         sa.Column("id", sa.INTEGER(), autoincrement=True, nullable=False),
         sa.Column("wishlist_id", sa.INTEGER(), autoincrement=False, nullable=False),
         sa.Column(
-            "visited_on", postgresql.TIMESTAMP(), autoincrement=False, nullable=False
+            "visited_on", sa.TIMESTAMP(), autoincrement=False, nullable=False
         ),
         sa.Column("rating", sa.INTEGER(), autoincrement=False, nullable=True),
         sa.Column("notes", sa.TEXT(), autoincrement=False, nullable=True),

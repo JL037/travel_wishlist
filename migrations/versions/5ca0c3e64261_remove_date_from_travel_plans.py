@@ -19,10 +19,14 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-      op.drop_column("travel_plans", "date")
+    """Upgrade schema."""
+    # The column "date" no longer exists, so skip dropping it.
+    # op.drop_column("travel_plans", "date")
+    pass
 
 
 def downgrade() -> None:
+    """Downgrade schema."""
     op.add_column(
         "travel_plans",
         sa.Column("date", sa.Date(), nullable=False)

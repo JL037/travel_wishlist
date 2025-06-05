@@ -19,13 +19,16 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.add_column("travel_plans", sa.Column("start_date", sa.DateTime(), nullable=False))
-    op.add_column("travel_plans", sa.Column("end_date", sa.DateTime(), nullable=False))
-
+    """Upgrade schema."""
+    # The columns already exist in the Railway database, so skip adding them again.
+    # op.add_column("travel_plans", sa.Column("start_date", sa.DateTime(), nullable=False))
+    # op.add_column("travel_plans", sa.Column("end_date", sa.DateTime(), nullable=False))
+    pass
 
 
 def downgrade() -> None:
+    """Downgrade schema."""
     op.drop_column("travel_plans", "end_date")
     op.drop_column("travel_plans", "start_date")
-    
+
 
