@@ -7,7 +7,6 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     SENTRY_DSN: str
     POSTGRES_DB: str
-    TEST_DATABASE_URL: str
     OPEN_WEATHER_API_KEY: str
 
     SECRET_KEY: str
