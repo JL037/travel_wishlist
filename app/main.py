@@ -12,8 +12,19 @@ from fastapi import FastAPI
 from app.routers import wishlist, auth, visited, weather, user_saved_cities, travel_plans
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.util import get_remote_address
+from app.utils.limiter import Limiter
 
 app = FastAPI()
+
+limiter = Limiter(key_func=get_remote_address)
+
+app.add_middleware(SlowAPIMiddleware)
+
+app.state.limiter = limiter
+app.add_exception_handler(429, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,

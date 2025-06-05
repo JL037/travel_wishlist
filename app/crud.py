@@ -4,11 +4,12 @@ from sqlalchemy import select
 from datetime import timezone, datetime
 from app.models.location import WishlistLocation, VisitedLocation
 from app.schema.locations import WishlistLocationCreate, WishlistLocationUpdate
+from app.models.refresh_tokens import RefreshToken
 
 
 async def create_wishlist_location(
     db: AsyncSession, location_data: WishlistLocationCreate, user_id: int
-):
+) -> WishlistLocation:
     new_location = WishlistLocation(
         name=location_data.name,
         city=location_data.city,
@@ -23,7 +24,7 @@ async def create_wishlist_location(
     await db.commit()
     await db.refresh(new_location)
 
-    # if visited=True, also add to visited_location
+    # ✅ If marked as visited, create VisitedLocation entry
     if location_data.visited:
         print("🟩 Creating VisitedLocation with:")
         print(" - wishlist_id:", new_location.id)
@@ -33,14 +34,17 @@ async def create_wishlist_location(
             wishlist_id=new_location.id,
             owner_id=user_id,
             visited_on=datetime.now(timezone.utc),
+            latitude=location_data.latitude,
+            longitude=location_data.longitude,
         )
-    db.add(visited)
-    try:
-        await db.commit()
-    except SQLAlchemyError as e:
-        await db.rollback()
-        print("🔥 DB error while inserting VisitedLocation:", e)
-        raise e  # re-raise so you see the actual error
+        db.add(visited)
+        try:
+            await db.commit()
+            await db.refresh(visited)
+        except SQLAlchemyError as e:
+            await db.rollback()
+            print("🔥 DB error while inserting VisitedLocation:", e)
+            raise
 
     return new_location
 
@@ -71,9 +75,9 @@ async def update_wishlist_location(
     await db.commit()
     await db.refresh(location)
 
-    # If visited switched to True and not already in visited_location table
+    # ✅ If "visited" switched to True, ensure VisitedLocation exists
     if not original_visited and location.visited:
-        stmt_visited = select(VisitedLocation).filter_by(wishlist_id=location.id)
+        stmt_visited = select(VisitedLocation).where(VisitedLocation.wishlist_id == location.id)
         result_visited = await db.execute(stmt_visited)
         already_visited = result_visited.scalar_one_or_none()
 
@@ -83,14 +87,15 @@ async def update_wishlist_location(
                 owner_id=user_id,
                 visited_on=datetime.now(timezone.utc),
                 latitude=location.latitude,
-                longitude=location.longitude, 
+                longitude=location.longitude,
             )
             db.add(visited)
             await db.commit()
+            await db.refresh(visited)
+
         print("UPDATE: location_id:", location_id)
         print("UPDATE: updates:", updates.model_dump(exclude_unset=True))
         print("UPDATE: found location:", location)
-
 
     return location
 
@@ -103,3 +108,32 @@ async def delete_wishlist_item(db: AsyncSession, item_id: int):
         await db.delete(db_item)
         await db.commit()
     return db_item
+
+
+async def store_refresh_token(db: AsyncSession, user_id: int, token: str):
+    new_token = RefreshToken(
+        user_id=user_id,
+        token=token,
+        created_at=datetime.now(timezone.utc).replace(tzinfo=None),
+    )
+    db.add(new_token)
+    await db.commit()
+    await db.refresh(new_token)
+    return new_token
+
+
+async def delete_refresh_token(db: AsyncSession, token: str):
+    result = await db.execute(
+        select(RefreshToken).where(RefreshToken.token == token)
+    )
+    db_token = result.scalar_one_or_none()
+    if db_token:
+        await db.delete(db_token)
+        await db.commit()
+
+
+async def get_refresh_token(db: AsyncSession, token: str):
+    result = await db.execute(
+        select(RefreshToken).where(RefreshToken.token == token)
+    )
+    return result.scalar_one_or_none()

@@ -1,0 +1,111 @@
+/* WishlistPage.css */
+
+.wishlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin-top: 6rem;
+  width: 250px;
+  flex: 0 0 auto;
+}
+
+.wishlist-form input,
+.wishlist-form select {
+  background-color: #1e1e1e;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 0.3rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.wishlist-form input:focus,
+.wishlist-form select:focus {
+  outline: none;
+  border-color: #0077b6;
+}
+
+.wishlist-form select {
+  cursor: pointer;
+}
+
+.wishlist-form button {
+  background-color: #0077b6;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.wishlist-form button:hover {
+  background-color: #023e8a;
+}
+
+.wishlist-container {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap; /* 💡 Wrap items on smaller screens */
+}
+
+.wishlist-items-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  flex: 1;
+  margin-top: 6rem;
+}
+
+.wishlist-item-card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 1rem;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.wishlist-item-card h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+.wishlist-item-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.wishlist-item-actions button {
+  background-color: #0077b6;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.wishlist-item-actions button:hover {
+  background-color: #023e8a;
+}
+
+/* 🟩 Responsive tweaks for small devices */
+@media (max-width: 600px) {
+  .wishlist-container {
+    flex-direction: column; /* stack form on top of items */
+    align-items: stretch;
+  }
+
+  .wishlist-form {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .wishlist-items-container {
+    margin-top: 2rem;
+  }
+}

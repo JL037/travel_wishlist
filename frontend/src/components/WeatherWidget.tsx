@@ -1,31 +1,28 @@
 import { useEffect, useState } from "react";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 import { getSavedCities, saveCity, deleteCity } from "../api/savedCities";
 
 export default function WeatherWidget() {
   const [cityInput, setCityInput] = useState("");
-  const [countryInput, setCountryInput] = useState(""); // 🟩 New: country input
+  const [countryInput, setCountryInput] = useState("");
   const [weather, setWeather] = useState<any>(null);
   const [error, setError] = useState("");
   const [savedCities, setSavedCities] = useState<{ id: number; city: string }[]>([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-
-    getSavedCities(token)
+    getSavedCities()
       .then(setSavedCities)
       .catch(() => setError("Failed to load saved cities"));
   }, []);
 
   const fetchWeather = async (city: string) => {
     try {
-      // 🟩 If country is set, add it to the URL
       const queryParams = new URLSearchParams({ city });
       if (countryInput.trim()) {
         queryParams.append("country", countryInput.trim().toUpperCase());
       }
 
-      const response = await fetch(
+      const response = await fetchWithAuth(
         `http://localhost:8000/api/weather?${queryParams.toString()}`
       );
       if (!response.ok) throw new Error("Failed to fetch weather");
@@ -39,15 +36,14 @@ export default function WeatherWidget() {
   };
 
   const handleSaveCity = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token || !cityInput) return;
+    if (!cityInput) return;
 
     try {
-      await saveCity(cityInput, token);
-      const updated = await getSavedCities(token);
+      await saveCity(cityInput);
+      const updated = await getSavedCities();
       setSavedCities(updated);
       setCityInput("");
-      setCountryInput(""); // 🟩 Clear country input too!
+      setCountryInput("");
       setError("");
     } catch {
       setError("Failed to save city.");
@@ -55,12 +51,9 @@ export default function WeatherWidget() {
   };
 
   const handleDeleteCity = async (cityId: number) => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-
     try {
-      await deleteCity(cityId, token);
-      const updated = await getSavedCities(token);
+      await deleteCity(cityId);
+      const updated = await getSavedCities();
       setSavedCities(updated);
       setError("");
     } catch {

@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from .location import WishlistLocation, VisitedLocation
     from app.models.user_saved_city import UserSavedCity
     from app.models.travel_plan import TravelPlan
+    from app.models.refresh_tokens import RefreshToken
 
 
 class UserRole(enum.Enum):
@@ -37,3 +38,4 @@ class User(Base):
 
     saved_cities: Mapped[list["UserSavedCity"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     travel_plans: Mapped[list["TravelPlan"]] = relationship(back_populates="user")
+    refresh_tokens: Mapped[list["RefreshToken"]] = relationship(back_populates="user", cascade="all, delete")

@@ -1,0 +1,103 @@
+/* Main container: horizontal layout */
+.visited-page-container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  margin-top: 4rem; /* space for navbar */
+  align-items: flex-start;
+  flex-wrap: wrap; /* Wrap to avoid overflow on smaller screens */
+  box-sizing: border-box;
+}
+
+/* Left column: visited list */
+.visited-list-container {
+  flex: 1;
+  max-width: 300px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 600px; /* adjust as needed */
+  box-sizing: border-box;
+}
+
+.visited-list-container h2 {
+  margin-top: 0;
+}
+
+.visited-card {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.visited-card h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+}
+
+.visited-card p {
+  margin: 0.1rem 0;
+  font-size: 0.85rem;
+}
+
+.visited-card button {
+  background-color: #d90429;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.visited-card button:hover {
+  background-color: #a4001e;
+}
+
+/* Right column: map */
+.visited-map-container {
+  flex: 3;
+  min-height: 600px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .visited-page-container {
+    flex-direction: column;
+  }
+
+  .visited-list-container {
+    max-width: 100%; /* Take full width on smaller screens */
+    margin-bottom: 1rem;
+    max-height: none; /* Remove height restriction for stacking */
+  }
+
+  .visited-map-container {
+    min-height: 400px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .visited-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .visited-card p {
+    font-size: 0.8rem;
+  }
+
+  .visited-card button {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+}

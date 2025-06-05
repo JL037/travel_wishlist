@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -26,13 +27,8 @@ export default function TravelPlanner() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
 
   const fetchEvents = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-
     try {
-      const res = await fetch("http://localhost:8000/api/travel-plans", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetchWithAuth("http://localhost:8000/api/travel-plans");
       if (!res.ok) throw new Error("Failed to load travel plans");
       const data = await res.json();
 
@@ -40,7 +36,6 @@ export default function TravelPlanner() {
         const start = new Date(plan.start_date);
         const end = new Date(plan.end_date);
 
-        // Avoid "all day" placement
         if (start.getHours() === 0 && start.getMinutes() === 0) start.setHours(9);
         if (end.getHours() === 0 && end.getMinutes() === 0) end.setHours(17);
 
@@ -66,9 +61,6 @@ export default function TravelPlanner() {
     const location = prompt("Enter trip location:", "Unknown");
     const notes = prompt("Any notes for this trip?", "");
 
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-
     const startDate = new Date(slotInfo.start);
     if (startDate.getHours() === 0 && startDate.getMinutes() === 0) startDate.setHours(9);
 
@@ -83,11 +75,10 @@ export default function TravelPlanner() {
     };
 
     try {
-      const res = await fetch("http://localhost:8000/api/travel-plans", {
+      const res = await fetchWithAuth("http://localhost:8000/api/travel-plans", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newEvent),
       });
@@ -105,13 +96,9 @@ export default function TravelPlanner() {
   };
 
   const deleteEvent = async (planId: number) => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-
     try {
-      const res = await fetch(`http://localhost:8000/api/travel-plans/${planId}`, {
+      const res = await fetchWithAuth(`http://localhost:8000/api/travel-plans/${planId}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!res.ok) {
@@ -126,7 +113,6 @@ export default function TravelPlanner() {
     }
   };
 
-  // 🟩 New: handle event clicks to confirm deletion
   const handleSelectEvent = (event: CalendarEvent) => {
     const confirmed = window.confirm(`Delete trip to "${event.title}"?`);
     if (confirmed) {
@@ -152,3 +138,4 @@ export default function TravelPlanner() {
     </div>
   );
 }
+

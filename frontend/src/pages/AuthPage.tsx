@@ -21,6 +21,7 @@ export default function AuthPage() {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: isLogin
           ? JSON.stringify({ username, password })
           : JSON.stringify({ email, username, password }),
@@ -30,13 +31,9 @@ export default function AuthPage() {
         throw new Error(isLogin ? "Login failed!" : "Registration failed!");
       }
 
-      const data = await response.json();
-
       if (isLogin) {
-        localStorage.setItem("access_token", data.access_token);
         navigate("/profile");
       } else {
-        // Registration was successful, switch to login
         setIsLogin(true);
         setEmail("");
         setUsername("");
@@ -55,7 +52,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="login-container">
+    <div id="auth-page" className="login-container">
       <div className="login-box">
         <img src="/globe.jpg" alt="Globe" className="globe-icon" />
         <h1>{isLogin ? "Welcome back, Explorer!" : "Create your account"}</h1>
@@ -107,6 +104,17 @@ export default function AuthPage() {
             {isLogin ? "Register here" : "Login here"}
           </button>
         </p>
+
+        <img
+          src="/logo.png"
+          alt="TWL Logo"
+          style={{
+            width: "100px",
+            marginTop: "10px",
+            opacity: 0.7,
+            filter: "invert(1)",
+          }}
+        />
 
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>

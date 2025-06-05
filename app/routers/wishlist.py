@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import Optional
@@ -97,4 +97,4 @@ async def delete_location(
 
     await db.delete(location)
     await db.commit()
-    return
+    return Response(status_code=204)

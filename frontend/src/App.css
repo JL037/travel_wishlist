@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  box-sizing: border-box; /* Prevent padding overflow on smaller screens */
 }
 
 .logo {
@@ -35,8 +36,27 @@
 
 .card {
   padding: 2em;
+  margin: 1em 0; /* Add vertical spacing between cards on smaller screens */
+  box-sizing: border-box;
 }
 
 .read-the-docs {
   color: #888;
 }
+
+/* Responsive tweaks for smaller devices */
+@media (max-width: 480px) {
+  #root {
+    padding: 1rem; /* Less padding on small screens */
+  }
+
+  .logo {
+    height: 4em; /* Smaller logo on small screens */
+    padding: 1em;
+  }
+
+  .card {
+    padding: 1em;
+  }
+}
+

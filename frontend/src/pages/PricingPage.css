@@ -1,0 +1,91 @@
+.pricing-container {
+  text-align: center;
+  max-width: 800px;
+  margin: 3rem auto 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.pricing-title {
+  color: #000;
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.pricing-subtitle {
+  color: #000;
+  margin: 0 auto 5px auto;
+  max-width: 60%;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.tier {
+  background-color: #333;
+  border-radius: 8px;
+  margin: 20px auto 7px auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-sizing: border-box;
+}
+
+.tier:hover {
+  transform: scale(1.02);
+  background-color: #444;
+}
+
+.tier h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.tier p {
+  color: #ccc;
+}
+
+/* Remove the box styling from thank-you, since it will be inside .tier */
+.thank-you {
+  background-color: #333;
+  border-radius: 8px;
+  margin: 10px auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  color: #fff;
+  font-size: 0.9rem; /* Increased from 0.5rem for better readability */
+  font-weight: normal;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 4rem; /* Reduced from 45rem! This seemed unintentional 😆 */
+}
+
+/* Responsive tweaks for smaller screens */
+@media (max-width: 600px) {
+  .pricing-title {
+    font-size: 1.6rem;
+  }
+
+  .pricing-subtitle {
+    max-width: 90%;
+    font-size: 0.95rem;
+  }
+
+  .tier {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .tier h2 {
+    font-size: 1.3rem;
+  }
+
+  .thank-you {
+    width: 90%;
+    font-size: 0.85rem;
+  }
+}
+

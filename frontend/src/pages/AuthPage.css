@@ -1,29 +1,39 @@
 /* AuthPage.css */
+#auth-page {
+  background-image: url("/map.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-/* Make sure the entire viewport and root are 100% sized */
+#auth-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+
 html, body, #root {
   margin: 0;
   height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
-/* Main container that takes up full screen and centers the login box */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-
-  /* Background map image covering entire screen */
   background-image: url("/map.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   position: relative;
 }
 
-/* Optional overlay for better text contrast */
 .login-container::before {
   content: "";
   position: absolute;
@@ -32,20 +42,19 @@ html, body, #root {
   z-index: 1;
 }
 
-/* Login box centered, with some padding and a slight dark background */
 .login-box {
   position: relative;
   z-index: 2;
   text-align: center;
   color: #fff;
-  background: rgba(0, 0, 0, 0.5); /* semi-transparent for better contrast */
+  background: rgba(0, 0, 0, 0.5);
   padding: 2rem;
   border-radius: 8px;
   max-width: 350px;
   width: 100%;
+  box-sizing: border-box;
 }
 
-/* Globe icon */
 .globe-icon {
   width: 80px;
   height: 80px;
@@ -54,19 +63,19 @@ html, body, #root {
   margin-bottom: 1rem;
 }
 
-/* Style the form inputs and button for consistency */
 .login-box input {
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 1rem;
   border: none;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .login-box button {
   width: 100%;
   padding: 0.5rem;
-  background-color: #28a745; /* green for emphasis */
+  background-color: #28a745;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -79,4 +88,26 @@ html, body, #root {
 
 .login-box p {
   margin: 0.5rem 0;
+}
+
+/* 🟩 Responsive tweaks for smaller devices */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 1rem;
+    max-width: 300px;
+  }
+
+  .globe-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .login-box input {
+    padding: 0.4rem;
+  }
+
+  .login-box button {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
 }

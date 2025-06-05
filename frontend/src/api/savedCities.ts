@@ -1,26 +1,37 @@
-export async function getSavedCities(token: string) {
-  const response = await fetch("http://localhost:8000/api/user/saved-cities", {
-    headers: { Authorization: `Bearer ${token}` }
-  });
+// frontend/src/api/savedCities.ts
+import { fetchWithAuth } from "./fetchWithAuth";
+
+export async function getSavedCities() {
+  const response = await fetchWithAuth("http://localhost:8000/api/user/saved-cities");
+  if (!response.ok) {
+    throw new Error("Failed to fetch saved cities");
+  }
   return response.json();
 }
 
-export async function saveCity(city: string, token: string) {
-  const response = await fetch("http://localhost:8000/api/user/saved-cities", {
+export async function saveCity(city: string) {
+  const response = await fetchWithAuth("http://localhost:8000/api/user/saved-cities", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify({ city })
+    body: JSON.stringify({ city }),
   });
+  if (!response.ok) {
+    throw new Error("Failed to save city");
+  }
   return response.json();
 }
 
-export async function deleteCity(cityId: number, token: string) {
-  const response = await fetch(`http://localhost:8000/api/user/saved-cities/${cityId}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` }
-  });
+export async function deleteCity(cityId: number) {
+  const response = await fetchWithAuth(
+    `http://localhost:8000/api/user/saved-cities/${cityId}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to delete city");
+  }
   return response.json();
 }

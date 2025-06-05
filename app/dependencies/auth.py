@@ -11,12 +11,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", scheme_name="BearerA
 
 
 def get_token_from_request(request: Request):
-    auth_header = request.headers.get("Authorization")
-    if auth_header and auth_header.startswith("Bearer "):
-        token = auth_header.split(" ")[1]
-        print("🟢 Found token in Authorization header:", token)
-        return token
-
+    # 🍪 Always rely on the access_token in cookies (no headers anymore!)
     cookie_token = request.cookies.get("access_token")
     print("🍪 Cookie token received:", cookie_token)
     return cookie_token

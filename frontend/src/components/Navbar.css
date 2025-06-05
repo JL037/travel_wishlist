@@ -1,0 +1,66 @@
+/* Navbar styling */
+.profile-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 0.4rem 1rem;
+  height: 40px;          /* Fixed height for consistency */
+  font-size: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+  overflow-x: auto;      /* 🟩 allow horizontal scroll on overflow */
+  white-space: nowrap;   /* 🟩 keep navbar items in one line */
+}
+
+.profile-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.profile-links,
+.logout {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.profile-links button,
+.logout button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.profile-links button:hover,
+.logout button:hover {
+  text-decoration: underline;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .profile-navbar {
+    justify-content: flex-start;  /* 🟩 Left-align on small screens */
+    overflow-x: auto;
+    white-space: nowrap;         /* 🟩 Prevent wrapping */
+  }
+
+  .profile-navbar > * {
+    flex: 0 0 auto;
+  }
+
+  .profile-links,
+  .logout {
+    gap: 0.3rem;
+    margin-left: auto;           /* 🟩 push logout to the right */
+  }
+}
+
+
+

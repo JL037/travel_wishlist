@@ -3,7 +3,7 @@
   width: 100%;
   max-width: 1000px;
   margin: 1rem auto;
-  overflow-x: hidden; /* 👈 Remove horizontal scrolling */
+  overflow-x: hidden;
   background: #fff;
   border-radius: 8px;
   padding: 1rem;
@@ -14,7 +14,7 @@
 /* Calendar itself */
 .rbc-calendar {
   width: 100%;
-  min-width: 0; /* 👈 No forced width */
+  min-width: 0;
   height: 600px;
   background-color: #fff;
   box-sizing: border-box;
@@ -23,8 +23,8 @@
 /* Week view: main grid area */
 .rbc-time-content {
   width: 100%;
-  min-width: 0; /* 👈 Let it be flexible */
-  overflow-x: hidden; /* 👈 Remove horizontal scroll bars */
+  min-width: 0;
+  overflow-x: hidden;
   display: flex;
   box-sizing: border-box;
 }
@@ -36,19 +36,18 @@
 }
 
 .rbc-time-header-content {
-  flex: 0 1 auto;  /* 👈 let it size to content! */
+  flex: 0 1 auto;
 }
 
-
-/* Individual day + gutter slots (make them flexible) */
+/* Individual day + gutter slots */
 .rbc-time-content > .rbc-time-gutter,
 .rbc-time-content > .rbc-day-slot {
-  min-width: 0;         /* 👈 Remove forced min-width */
-  flex: 1 1 auto;       /* 👈 Let them grow/shrink as needed */
+  min-width: 0;
+  flex: 1 1 auto;
   box-sizing: border-box;
 }
 
-/* Style the toolbar for clarity */
+/* Toolbar styling */
 .rbc-toolbar {
   display: flex;
   justify-content: space-between;
@@ -83,7 +82,7 @@
   font-size: 1.1rem;
 }
 
-/* Month header (if visible) */
+/* Month header */
 .rbc-month-header {
   font-weight: bold;
   color: #333;
@@ -104,7 +103,7 @@
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;  
+  white-space: nowrap;
   background-color: #1976d2 !important;
   color: #fff !important;
   border-radius: 4px;
@@ -113,8 +112,8 @@
 }
 
 .rbc-day-slot {
-  overflow: hidden;  /* 👈 Hide any child event that tries to overflow */
-  position: relative; /* 👈 Ensure child events respect their container */
+  overflow: hidden;
+  position: relative;
 }
 
 .rbc-allday-cell {
@@ -123,24 +122,47 @@
   box-sizing: border-box;
 }
 
-/* Style for Agenda view cells */
-.rbc-agenda-event-cell {
-  color: #333 !important; /* Dark text */
-  font-weight: bold;
-  background: #f9f9f9; /* Light background for visibility */
-  border-bottom: 1px solid #ddd; /* Optional: divider for clarity */
-}
-
-.rbc-agenda-time-cell {
-  color: #333 !important; /* Dark text */
-  font-weight: bold;
-  background: #f9f9f9; /* Light background for visibility */
-  border-bottom: 1px solid #ddd;
-}
-
+/* Agenda view styling */
+.rbc-agenda-event-cell,
+.rbc-agenda-time-cell,
 .rbc-agenda-date-cell {
-  color: #333 !important; /* Dark text */
+  color: #333 !important;
   font-weight: bold;
-  background: #f9f9f9; /* Light background for visibility */
+  background: #f9f9f9;
   border-bottom: 1px solid #ddd;
+}
+
+/* 🟩 Responsive tweaks for smaller devices */
+@media (max-width: 768px) {
+  .travel-planner-container {
+    padding: 0.5rem;
+  }
+
+  .rbc-calendar {
+    height: 500px;
+  }
+
+  .rbc-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .rbc-toolbar-label {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .rbc-calendar {
+    height: 400px;
+  }
+
+  .rbc-toolbar button {
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .rbc-toolbar-label {
+    font-size: 0.95rem;
+  }
 }

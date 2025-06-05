@@ -23,10 +23,10 @@ async def create_location(
             + (f", '{item.country}'" if item.country else ""),
         )
 
-    new_data = item.model_dump()
+    new_data = item.model_dump(exclude_unset=True)
     new_data["owner_id"] = user_id
-    new_data["latitude"] = latlon[0] if latlon else None
-    new_data["longitude"] = latlon[1] if latlon else None
+    new_data["latitude"] = latlon[0]
+    new_data["longitude"] = latlon[1]
 
     new_location = WishlistLocation(**new_data)
     db.add(new_location)
@@ -34,10 +34,6 @@ async def create_location(
     await db.refresh(new_location)
 
     if item.visited:
-        print("🔍 Creating VisitedLocation with:")
-        print("- wishlist_id:", new_location.id)
-        print("- owner_id:", user_id)
-
         visited = VisitedLocation(
             wishlist_id=new_location.id,
             owner_id=user_id,

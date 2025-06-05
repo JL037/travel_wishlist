@@ -1,7 +1,7 @@
 # app/routers/weather.py
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, HTTPException
 import httpx
-from app.core.config import settings  
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -10,10 +10,8 @@ async def get_weather(
     city: str = Query(..., min_length=1),
     country: str | None = Query(None)
 ):
-    if country:
-        query_param = f"{city},{country}"
-    else:
-        query_param = city
+    # Combine city and country code for API query
+    query_param = f"{city},{country}" if country else city
 
     url = (
         f"https://api.openweathermap.org/data/2.5/weather?"
@@ -22,15 +20,23 @@ async def get_weather(
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url)
-        if response.status_code != 200:
-            return {"error": "Failed to fetch weather data."}
+
+        # Handle errors from OpenWeather
+        if response.status_code == 404:
+            raise HTTPException(status_code=404, detail="City not found.")
+        elif response.status_code != 200:
+            raise HTTPException(status_code=500, detail="Failed to fetch weather data.")
+
         data = response.json()
+
+    # 🟩 Validate keys to avoid KeyError
+    if not all(key in data for key in ["name", "sys", "main", "weather"]):
+        raise HTTPException(status_code=500, detail="Incomplete weather data.")
 
     return {
         "city": data["name"],
-        "country": data["sys"]["country"],
+        "country": data["sys"].get("country", "N/A"),
         "temperature": data["main"]["temp"],
-        "description": data["weather"][0]["description"],
+        "description": data["weather"][0]["description"].capitalize(),
         "icon": data["weather"][0]["icon"],
     }
-

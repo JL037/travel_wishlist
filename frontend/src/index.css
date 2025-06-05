@@ -11,7 +11,24 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Add responsive text scaling for mobile */
+  font-size: 16px;
 }
+
+/* Make sure all main content sections respect the fixed navbar height */
+.profile-content,
+.wishlist-container,
+.visited-page-container {
+  margin-top: 50px; /* offset for 40px navbar + small buffer */
+  box-sizing: border-box;
+}
+
+/* For any other pages with fixed navbar overlap */
+.main-container {
+  margin-top: 50px;
+}
+
 
 a {
   font-weight: 500;
@@ -25,14 +42,16 @@ a:hover {
 body {
   margin: 0;
   display: block;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  padding: 0 1rem; /* Add some horizontal padding for smaller screens */
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2.4rem; /* Reduce size for mobile readability */
+  line-height: 1.2;
+  margin: 0.5em 0;
 }
 
 button {
@@ -45,6 +64,9 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  width: 100%; /* Make buttons full-width on mobile */
+  max-width: 300px; /* But don’t stretch too far on desktop */
+  box-sizing: border-box;
 }
 button:hover {
   border-color: #646cff;
@@ -66,3 +88,16 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Responsive tweaks for smaller devices */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+  }
+}
+

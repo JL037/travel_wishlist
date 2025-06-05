@@ -1,46 +1,41 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 import "./ProfilePage.css";
 import WeatherWidget from "../components/WeatherWidget";
 import TravelPlanner from "../components/TravelPlanner";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 
 export default function ProfilePage() {
+  console.log("🚨 ProfilePage mounted");
+
   const [profile, setProfile] = useState<any>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Not logged in!");
-      navigate("/");
-      return;
-    }
+    console.log("🚨 Starting fetchProfile");
+    const fetchProfile = async () => {
+      try {
+        const res = await fetchWithAuth("http://localhost:8000/auth/me");
+        console.log("🚀 Fetch finished:", res);
 
-    fetch("http://localhost:8000/auth/me", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch profile");
-        return res.json();
-      })
-      .then(setProfile)
-      .catch((err) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch profile");
+        }
+
+        const data = await res.json();
+        console.log("🚀 Profile data:", data);
+        setProfile(data);
+      } catch (err) {
         console.error("Error fetching profile:", err);
-        alert("Failed to fetch profile.");
-      });
-  }, [navigate]);
+        alert("Failed to fetch profile. Please try again!");
+      }
+    };
 
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    navigate("/");
-  };
-
-  const handleGoToWishlist = () => navigate("/wishlist");
-  const handleGoToVisited = () => navigate("/visited");
+    fetchProfile();
+  }, []);
 
   if (!profile) {
     return (
-      <div style={{ textAlign: "center", color: "#aaa" }}>
+      <div style={{ textAlign: "center", color: "#aaa", marginTop: "4rem" }}>
         <p>Loading profile data...</p>
       </div>
     );
@@ -48,17 +43,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <div className="profile-navbar">
-        <div className="profile-name">Adventurer {profile.username}</div>
-        <div className="profile-links">
-          <button onClick={handleGoToWishlist}>Go to My Wishlist</button>
-          <button onClick={handleGoToVisited}>Go to Visited Locations</button>
-        </div>
-        <div className="logout">
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      </div>
-
+      <Navbar username={profile.username} />
       <div className="profile-content">
         <div className="weather-container">
           <WeatherWidget />
