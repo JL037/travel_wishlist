@@ -8,7 +8,7 @@ export default function FAQPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetchWithAuth("http://localhost:8000/auth/me");
+        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
         setUser(data);

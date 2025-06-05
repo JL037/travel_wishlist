@@ -2,7 +2,7 @@
 import { fetchWithAuth } from "./fetchWithAuth";
 
 export async function getSavedCities() {
-  const response = await fetchWithAuth("http://localhost:8000/api/user/saved-cities");
+  const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/api/user/saved-cities`);
   if (!response.ok) {
     throw new Error("Failed to fetch saved cities");
   }
@@ -10,7 +10,7 @@ export async function getSavedCities() {
 }
 
 export async function saveCity(city: string) {
-  const response = await fetchWithAuth("http://localhost:8000/api/user/saved-cities", {
+  const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/api/user/saved-cities`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export async function saveCity(city: string) {
 
 export async function deleteCity(cityId: number) {
   const response = await fetchWithAuth(
-    `http://localhost:8000/api/user/saved-cities/${cityId}`,
+    `${import.meta.env.VITE_API_URL}/api/user/saved-cities/${cityId}`,
     {
       method: "DELETE",
     }

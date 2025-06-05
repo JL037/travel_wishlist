@@ -23,7 +23,7 @@ export default function WeatherWidget() {
       }
 
       const response = await fetchWithAuth(
-        `http://localhost:8000/api/weather?${queryParams.toString()}`
+        `${import.meta.env.VITE_API_URL}/api/weather?${queryParams.toString()}`
       );
       if (!response.ok) throw new Error("Failed to fetch weather");
       const data = await response.json();

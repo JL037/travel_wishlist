@@ -14,7 +14,7 @@ export default function ProfilePage() {
     console.log("🚨 Starting fetchProfile");
     const fetchProfile = async () => {
       try {
-        const res = await fetchWithAuth("http://localhost:8000/auth/me");
+        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
         
 
         if (!res.ok) {

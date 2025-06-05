@@ -28,7 +28,7 @@ export default function TravelPlanner() {
 
   const fetchEvents = async () => {
     try {
-      const res = await fetchWithAuth("http://localhost:8000/api/travel-plans");
+      const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/api/travel-plans`);
       if (!res.ok) throw new Error("Failed to load travel plans");
       const data = await res.json();
 
@@ -75,7 +75,7 @@ export default function TravelPlanner() {
     };
 
     try {
-      const res = await fetchWithAuth("http://localhost:8000/api/travel-plans", {
+      const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/api/travel-plans`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export default function TravelPlanner() {
 
   const deleteEvent = async (planId: number) => {
     try {
-      const res = await fetchWithAuth(`http://localhost:8000/api/travel-plans/${planId}`, {
+      const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/api/travel-plans/${planId}`, {
         method: "DELETE",
       });
 

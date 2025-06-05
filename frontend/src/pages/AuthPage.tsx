@@ -14,8 +14,8 @@ export default function AuthPage() {
     e.preventDefault();
 
     const url = isLogin
-      ? "http://localhost:8000/auth/login"
-      : "http://localhost:8000/auth/register";
+      ? `${import.meta.env.VITE_API_URL}/auth/login`
+      : `${import.meta.env.VITE_API_URL}/auth/register`;
 
     try {
       const response = await fetch(url, {

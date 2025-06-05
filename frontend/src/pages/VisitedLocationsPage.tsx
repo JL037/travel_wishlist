@@ -20,7 +20,7 @@ export default function VisitedLocationsPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetchWithAuth("http://localhost:8000/auth/me");
+        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
         setUser(data);
@@ -36,7 +36,7 @@ export default function VisitedLocationsPage() {
   useEffect(() => {
     const fetchVisitedLocations = async () => {
       try {
-        const res = await fetchWithAuth("http://localhost:8000/visited");
+        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/visited`);
         if (!res.ok) throw new Error("Failed to fetch visited locations.");
         const data = await res.json();
         const cleanedData = data.map((item: any) => ({
@@ -58,7 +58,7 @@ export default function VisitedLocationsPage() {
     if (!confirm("Are you sure you want to delete this visited location?")) return;
 
     try {
-      const response = await fetchWithAuth(`http://localhost:8000/visited/${id}`, {
+      const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/visited/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete visited location.");

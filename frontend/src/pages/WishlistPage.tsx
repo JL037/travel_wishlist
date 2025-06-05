@@ -18,7 +18,7 @@ export default function WishlistPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetchWithAuth("http://localhost:8000/auth/me");
+        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
         setUser(data);
@@ -32,7 +32,7 @@ export default function WishlistPage() {
 
   // 🟩 Fetch wishlist on mount
   useEffect(() => {
-    fetchWithAuth("http://localhost:8000/wishlist")
+    fetchWithAuth(`${import.meta.env.VITE_API_URL}/wishlist`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch wishlist.");
         return res.json();
@@ -47,7 +47,7 @@ export default function WishlistPage() {
   const handleAddWishlistItem = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetchWithAuth("http://localhost:8000/wishlist", {
+      const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/wishlist`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -83,7 +83,7 @@ export default function WishlistPage() {
     if (newDescription) updateData.description = newDescription;
     updateData.visited = newVisited;
     try {
-      const response = await fetchWithAuth(`http://localhost:8000/wishlist/${id}`, {
+      const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/wishlist/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateData),
@@ -102,7 +102,7 @@ export default function WishlistPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this item?")) return;
     try {
-      const response = await fetchWithAuth(`http://localhost:8000/wishlist/${id}`, {
+      const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/wishlist/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete wishlist item.");
