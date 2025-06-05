@@ -8,7 +8,6 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   let res = await fetch(url, config);
 
   if (res.status === 401) {
-    console.warn("Access token expired, trying refresh...");
 
     const refreshRes = await fetch("http://localhost:8000/auth/refresh", {
       method: "POST",
@@ -16,10 +15,8 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     });
 
     if (refreshRes.ok) {
-      console.log("✅ Refresh worked, retrying original request...");
       res = await fetch(url, config);
     } else {
-      console.warn("❌ Refresh failed, redirecting to login");
       window.location.href = "/";
       return res;
     }

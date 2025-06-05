@@ -26,9 +26,7 @@ async def create_wishlist_location(
 
     # ✅ If marked as visited, create VisitedLocation entry
     if location_data.visited:
-        print("🟩 Creating VisitedLocation with:")
-        print(" - wishlist_id:", new_location.id)
-        print(" - owner_id:", user_id)
+        
 
         visited = VisitedLocation(
             wishlist_id=new_location.id,
@@ -92,10 +90,6 @@ async def update_wishlist_location(
             db.add(visited)
             await db.commit()
             await db.refresh(visited)
-
-        print("UPDATE: location_id:", location_id)
-        print("UPDATE: updates:", updates.model_dump(exclude_unset=True))
-        print("UPDATE: found location:", location)
 
     return location
 

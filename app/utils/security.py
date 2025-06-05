@@ -21,7 +21,6 @@ def create_access_token(user_id: int | str, expires_delta: timedelta | None = No
         "sub": str(user_id),
         "exp": expire,
     }
-    print("🔐 Encoding access token with payload:", to_encode)
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
@@ -31,7 +30,6 @@ def create_refresh_token(user_id: int, expires_delta: timedelta) -> str:
         "sub": str(user_id),
         "exp": expire_timestamp,
     }
-    print("🔐 Encoding refresh token with payload:", to_encode)
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 

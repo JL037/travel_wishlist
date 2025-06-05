@@ -88,7 +88,7 @@ async def login(
         value=access_token,
         httponly=True,
         samesite="lax",
-        secure=False,
+        secure=True,
         max_age=1800,
     )
     response.set_cookie(
@@ -96,7 +96,7 @@ async def login(
         value=refresh_token,
         httponly=True,
         samesite="lax",
-        secure=False,
+        secure=True,
         max_age=7 * 24 * 60 * 60,
     )
 
@@ -141,7 +141,7 @@ async def refresh_token(request: Request, db: AsyncSession = Depends(get_db)):
         value=new_access_token,
         httponly=True,
         samesite="lax",
-        secure=False,
+        secure=True,
         max_age=1800,
     )
     response.set_cookie(
@@ -149,7 +149,7 @@ async def refresh_token(request: Request, db: AsyncSession = Depends(get_db)):
         value=new_refresh_token,
         httponly=True,
         samesite="lax",
-        secure=False,
+        secure=True,
         max_age=7 * 24 * 60 * 60,
     )
     return response
@@ -157,8 +157,6 @@ async def refresh_token(request: Request, db: AsyncSession = Depends(get_db)):
 
 @router.get("/me", response_model=UserRead, status_code=status.HTTP_200_OK)
 def read_current_user(request: Request, current_user: User = Depends(get_current_user)):
-    print("🚨 Full request headers:", request.headers)
-    print("🚨 Cookies dict:", request.cookies)
     return current_user
 
 

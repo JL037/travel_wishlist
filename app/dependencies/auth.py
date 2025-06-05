@@ -13,7 +13,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", scheme_name="BearerA
 def get_token_from_request(request: Request):
     # 🍪 Always rely on the access_token in cookies (no headers anymore!)
     cookie_token = request.cookies.get("access_token")
-    print("🍪 Cookie token received:", cookie_token)
     return cookie_token
 
 
@@ -25,11 +24,9 @@ async def get_current_user(
         raise HTTPException(status_code=401, detail="Not authenticated")
 
     try:
-        print("🚨 Raw token received:", token)
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
-        print("Decoded payload:", payload)
         user_id = payload.get("sub")
         if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid token payload")
