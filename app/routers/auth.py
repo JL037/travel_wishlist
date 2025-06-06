@@ -14,13 +14,12 @@ from app.utils.security import (
 )
 from app.dependencies.auth import get_current_user
 from app.core.config import settings
-from app.utils.limiter import limiter
 from app.crud import store_refresh_token, get_refresh_token, delete_refresh_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@limiter.limit("2/minute")
+# @limiter.limit("2/minute")
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 async def register_user(
     request: Request,
@@ -53,7 +52,7 @@ async def register_user(
     return new_user
 
 
-@limiter.limit("5/minute")
+# @limiter.limit("5/minute")
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def login(
     request: Request,
@@ -82,7 +81,6 @@ async def login(
 
     response = JSONResponse(content={"message": "Login successful"})
 
-    # 🟢 For production, set secure=True if using HTTPS!
     response.set_cookie(
         key="access_token",
         value=access_token,

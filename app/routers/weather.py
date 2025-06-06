@@ -29,7 +29,7 @@ async def get_weather(
 
         data = response.json()
 
-    # 🟩 Validate keys to avoid KeyError
+    # Validate keys to avoid KeyError
     if not all(key in data for key in ["name", "sys", "main", "weather"]):
         raise HTTPException(status_code=500, detail="Incomplete weather data.")
 

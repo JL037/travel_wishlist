@@ -20,20 +20,25 @@ sentry_sdk.init(
 
 app = FastAPI()
 
+origins = [
+    "https://travel-wishlist-zeta.vercel.app",
+
+
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://travel-wishlist-mfsescjs7-jared-lemlers-projects.vercel.app"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-limiter = Limiter(key_func=get_remote_address)
+# limiter = Limiter(key_func=get_remote_address)
 
-app.add_middleware(SlowAPIMiddleware)
+# app.add_middleware(SlowAPIMiddleware)
 
-app.state.limiter = limiter
-app.add_exception_handler(429, _rate_limit_exceeded_handler)
+# app.state.limiter = limiter
+# app.add_exception_handler(429, _rate_limit_exceeded_handler)
 
 
 
