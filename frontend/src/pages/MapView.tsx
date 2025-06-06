@@ -1,6 +1,9 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import "../components/leaflet.config";
+
 import type { LatLngExpression } from 'leaflet';
+
 
 type Location = {
   id: number;
@@ -10,7 +13,7 @@ type Location = {
 };
 
 export default function MapView({ locations }: { locations: Location[] }) {
-  const defaultCenter: LatLngExpression = [20, 0]; // Default center, adjust as you like!
+  const defaultCenter: LatLngExpression = [20, 0]; 
 
   return (
     <MapContainer center={defaultCenter} zoom={2} style={{ height: '500px', width: '100%' }}>
