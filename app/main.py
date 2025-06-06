@@ -5,10 +5,10 @@ from fastapi import FastAPI
 from app.routers import wishlist, auth, visited, weather, user_saved_cities, travel_plans
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi import _rate_limit_exceeded_handler
-from slowapi.middleware import SlowAPIMiddleware
-from slowapi.util import get_remote_address
-from app.utils.limiter import Limiter
+# from slowapi import _rate_limit_exceeded_handler
+# from slowapi.middleware import SlowAPIMiddleware
+# from slowapi.util import get_remote_address
+# from app.utils.limiter import Limiter
 
 sentry_sdk.init(
     dsn= settings.SENTRY_DSN,  # 🟡 Replace this with the real DSN from Sentry dashboard!
