@@ -87,7 +87,7 @@ async def login(
         key="access_token",
         value=access_token,
         httponly=True,
-        samesite="lax",
+        samesite="none",
         secure=True,
         max_age=1800,
     )
@@ -95,7 +95,7 @@ async def login(
         key="refresh_token",
         value=refresh_token,
         httponly=True,
-        samesite="lax",
+        samesite="none",
         secure=True,
         max_age=7 * 24 * 60 * 60,
     )
@@ -140,7 +140,7 @@ async def refresh_token(request: Request, db: AsyncSession = Depends(get_db)):
         key="access_token",
         value=new_access_token,
         httponly=True,
-        samesite="lax",
+        samesite="none",
         secure=True,
         max_age=1800,
     )
@@ -148,7 +148,7 @@ async def refresh_token(request: Request, db: AsyncSession = Depends(get_db)):
         key="refresh_token",
         value=new_refresh_token,
         httponly=True,
-        samesite="lax",
+        samesite="none",
         secure=True,
         max_age=7 * 24 * 60 * 60,
     )
