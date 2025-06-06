@@ -13,7 +13,7 @@ from app.services.wishlist_services import create_location
 router = APIRouter(prefix="/wishlist", tags=["Wishlist Items"])
 
 
-@router.post("/", response_model=locations.WishlistLocationOut)
+@router.post("", response_model=locations.WishlistLocationOut)
 async def create_wishlist_item(
     item: locations.WishlistLocationCreate,
     db: AsyncSession = Depends(get_db),
@@ -22,7 +22,7 @@ async def create_wishlist_item(
     return await create_location(item, current_user.id, db)
 
 
-@router.get("/", response_model=list[locations.WishlistLocationOut])
+@router.get("", response_model=list[locations.WishlistLocationOut])
 async def read_wishlist_items(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),

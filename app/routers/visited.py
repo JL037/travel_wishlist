@@ -10,7 +10,7 @@ from app.models.users import User
 router = APIRouter(prefix="/visited", tags=["Visited Locations"])
 
 
-@router.get("/", response_model=list[VisitedWithDetailsOut], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[VisitedWithDetailsOut], status_code=status.HTTP_200_OK)
 async def get_visited_with_details(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
