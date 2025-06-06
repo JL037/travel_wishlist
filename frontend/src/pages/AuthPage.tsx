@@ -23,7 +23,7 @@ export default function AuthPage() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: isLogin
-          ? JSON.stringify({ username, password })
+          ? JSON.stringify({ email: username, password })
           : JSON.stringify({ email, username, password }),
       });
 
