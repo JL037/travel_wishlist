@@ -22,7 +22,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://travel-wishlist-zeta.vercel.app"],
+    allow_origins=["https://travel-wishlist-mfsescjs7-jared-lemlers-projects.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
