@@ -21,10 +21,10 @@ sentry_sdk.init(
 app = FastAPI()
 
 origins = [
-    "https://travel-wishlist-zeta.vercel.app",
-
-
+    "https://travelwishlist.app",
+    "https://www.travelwishlist.app",
 ]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
