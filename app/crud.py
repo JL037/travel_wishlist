@@ -105,6 +105,14 @@ async def delete_wishlist_item(db: AsyncSession, item_id: int):
 
 
 async def store_refresh_token(db: AsyncSession, user_id: int, token: str):
+    # 🟣 First, delete any existing token for this user
+    result = await db.execute(select(RefreshToken).where(RefreshToken.user_id == user_id))
+    existing_token = result.scalar_one_or_none()
+    if existing_token:
+        await db.delete(existing_token)
+        await db.commit()
+    
+    # 🟣 Now store the new token
     new_token = RefreshToken(
         user_id=user_id,
         token=token,
@@ -114,6 +122,7 @@ async def store_refresh_token(db: AsyncSession, user_id: int, token: str):
     await db.commit()
     await db.refresh(new_token)
     return new_token
+
 
 
 async def delete_refresh_token(db: AsyncSession, token: str):
