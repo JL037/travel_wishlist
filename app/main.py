@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from app.routers import wishlist, auth, visited, weather, user_saved_cities, travel_plans
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
-from app.utils.datadog_logger import datadog_middleware
+# from app.utils.datadog_logger import datadog_middleware
 # from slowapi import _rate_limit_exceeded_handler
 # from slowapi.middleware import SlowAPIMiddleware
 # from slowapi.util import get_remote_address
@@ -21,7 +21,7 @@ sentry_sdk.init(
 
 app = FastAPI()
 
-app.add_middleware(datadog_middleware, service="travel-wishlist-backend")
+# app.add_middleware(datadog_middleware, service="travel-wishlist-backend")
 
 
 origins = [
