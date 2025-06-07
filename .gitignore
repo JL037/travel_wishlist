@@ -87,6 +87,7 @@ alembic.ini
 config.py
 *.code-workspace
 .ruff_cache/
+datadog_logger.py
 
 # Poetry
 poetry.lock
