@@ -141,14 +141,12 @@ export default function WishlistPage() {
             placeholder="Name"
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
-            required
           />
           <input
             type="text"
             placeholder="Description"
             value={newItemDescription}
             onChange={(e) => setNewItemDescription(e.target.value)}
-            required
           />
           <input
             type="text"
