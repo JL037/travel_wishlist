@@ -20,7 +20,7 @@ class WishlistLocation(Base):
         DateTime(timezone=True), server_default=func.now()
     )
 
-    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     owner = relationship("User", back_populates="locations")
     visited_locations: Mapped[list["VisitedLocation"]] = relationship(
         back_populates="wishlist_location"
@@ -31,7 +31,7 @@ class VisitedLocation(Base):
     __tablename__ = "visited_location"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    owner_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     wishlist_id: Mapped[int] = mapped_column(
         ForeignKey("wishlist_location.id"), nullable=False
     )

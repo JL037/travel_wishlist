@@ -38,6 +38,8 @@ export default function Navbar({ username }: { username?: string }) {
         <button onClick={() => navigate("/visited")}>Visited Locations</button>
         <button onClick={() => navigate("/faq")}>FAQS</button>
         <button onClick={() => navigate("/pricing")}>Pricing</button>
+        <button onClick={() => navigate("/settings")}>Settings</button>
+
       </div>
       <div className="logout">
         <button onClick={handleLogout}>Logout</button>

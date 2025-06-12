@@ -27,7 +27,8 @@ app = FastAPI()
 origins = [
     "https://travelwishlist.app",
     "https://www.travelwishlist.app",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 app.add_middleware(

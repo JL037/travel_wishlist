@@ -29,11 +29,11 @@ class User(Base):
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.USER)
 
     locations: Mapped[list["WishlistLocation"]] = relationship(
-        "WishlistLocation", back_populates="owner"
+        "WishlistLocation", back_populates="owner", cascade="all, delete-orphan"
     )
 
     visited_locations: Mapped[list["VisitedLocation"]] = relationship(
-        "VisitedLocation", back_populates="owner"
+        "VisitedLocation", back_populates="owner", cascade="all, delete-orphan"
     )
 
     saved_cities: Mapped[list["UserSavedCity"]] = relationship(back_populates="user", cascade="all, delete-orphan")

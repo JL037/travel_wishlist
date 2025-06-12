@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from datetime import timedelta
 from jose import jwt, JWTError
 
-from app.schema.user import UserRead, UserCreate, LoginData
+from app.schema.user import UserRead, UserCreate, LoginData, UserUpdate
 from app.models.users import User
 from app.database import get_db
 from app.utils.security import (
@@ -173,3 +173,46 @@ async def logout(request: Request, db: AsyncSession = Depends(get_db)):
 @router.get("/api/test", status_code=status.HTTP_200_OK)
 async def test_endpoint():
     return {"message": "Hello from backend!"}
+
+@router.post("/change-password")
+async def change_password(current_password: str, new_password: str, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if not verify_password(current_password, current_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect current password")
+    
+    current_user.hashed_password = hash_password(new_password)
+    db.add(current_user)
+    await db.commit()
+    await db.refresh(current_user)
+
+    return {"message": "Password updated successfully"}
+
+@router.put ("/me", response_model=dict)
+async def update_profile(update_data: UserUpdate, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    user_data = update_data.model_dump(exclude_unset=True)
+
+    if "username" in user_data:
+        result = await db.execute(select(User).where(User.username == user_data["username"]))
+        existing = result.scalar_one_or_none()
+        if existing and existing.id != current_user.id:
+            raise HTTPException(status_code=400, detail="Username already in use")
+        
+    if "email" in user_data:
+        result = await db.execute(select(User).where(User.email == user_data["email"]))
+        existing = result.scalar_one_or_none()
+        if existing and existing.id != current_user.id:
+            raise HTTPException(status_code=400, detail="Email already in use")
+
+    for field, value in user_data.items():
+        setattr(current_user, field, value)
+
+    db.add(current_user)
+    await db.commit()
+    await db.refresh(current_user)
+
+    return {"message": "Profile updated successfully"}
+
+@router.delete("/delete-account", response_class=JSONResponse)
+async def delete_account(db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    await db.delete(current_user)
+    await db.commit()
+    return {"message": "Account deleted successfully"}

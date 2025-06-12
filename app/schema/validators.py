@@ -23,3 +23,9 @@ def validate_longitude(value: float) -> float:
     if value < -180 or value > 180:
         raise ValueError("Longitude must be between -180 and 180")
     return value
+
+def validate_username(value: str) -> str:
+    value = value.strip()
+    if not value:
+        raise ValueError("Username must not be empty")
+    return value
