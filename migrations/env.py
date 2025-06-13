@@ -20,7 +20,6 @@ print("FROM ENV.PY: DATABASE_URL =", settings.DATABASE_URL)
 config = context.config
 
 sync_url = settings.DATABASE_URL.replace("postgresql+asyncpg", "postgresql+psycopg2")
-print("🔧 Converted sync URL:", sync_url)
 config.set_main_option("sqlalchemy.url", sync_url)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

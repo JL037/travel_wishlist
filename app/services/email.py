@@ -31,12 +31,8 @@ async def _send_email(to: str, subject: str, html: str):
         "subject": subject,
         "html": html,
     }
-    print("RESEND_API_KEY loaded (prefix):", settings.RESEND_API_KEY[:6], "***")
     
     async with httpx.AsyncClient() as client:
         response = await client.post(RESEND_API_URL, headers=headers, json=data)
-
-        print("Resend response status:", response.status_code)
-        print("Resend response body:", response.text)
 
         response.raise_for_status()

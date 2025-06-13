@@ -24,7 +24,6 @@ export default function ForgotPasswordPage() {
             const data = await response.json();
             if (response.ok) {
                 setMessage("If your email exists in our system, a reset link was sent.");
-                console.log("Token (for dev):", data.reset_token);
             }   else {
                 setError(data.detail || "Something went wrong.");
             }
