@@ -6,7 +6,7 @@ from typing import AsyncGenerator
 DATABASE_URL = str(settings.DATABASE_URL).replace(
     "postgresql://", "postgresql+asyncpg://"
 )
-print("Using DB URL:", DATABASE_URL)
+
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 async_session = async_sessionmaker(bind=engine, expire_on_commit=False)
