@@ -31,7 +31,7 @@ export default function SettingsPage() {
   // ✅ Handle profile update
   const handleProfileUpdate = async () => {
     try {
-      const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/me`, {
+      const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email }),
@@ -47,7 +47,7 @@ export default function SettingsPage() {
   // ✅ Handle password change
   const handleChangePassword = async () => {
     try {
-      const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/change-password`, {
+      const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/change-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -72,7 +72,7 @@ export default function SettingsPage() {
     if (!confirmed) return;
 
     try{
-        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/delete-account`, {
+        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/delete-account`, {
             method: "DELETE",
         });
         
@@ -95,63 +95,69 @@ export default function SettingsPage() {
   }
 
   // ✅ Page content
-  return (
-    <>
-      <Navbar username={user?.username} />
+return (
+  <>
+    <Navbar username={user?.username} />
 
-      <div className="settings-container">
-        <h2>Settings</h2>
+    <div className="settings-container">
+      <h2>Settings</h2>
 
-        <section>
-          <h3>Update Profile</h3>
-          <input
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            placeholder="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <button onClick={handleProfileUpdate}>Update Profile</button>
-        </section>
+      <section>
+        <h3>Update Profile</h3>
+        <label htmlFor="username">Username</label>
+        <input
+          id="username"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-        <section>
-          <h3>Change Password</h3>
-          <input
-            type="password"
-            placeholder="Current Password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <button onClick={handleChangePassword}>Change Password</button>
-        </section>
-        <section style={{ borderTop: "1px solid #ccc", marginTop: "2rem", paddingTop: "1rem" }}>
-        <h3 style={{ color: "red" }}>Area 51 </h3>
-        <button
-            onClick={handleDeleteAccount}
-            style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "0.75rem 1rem",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            marginTop: "0.5rem",
-        }}
-        >
-        Delete My Account
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          placeholder="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <button onClick={handleProfileUpdate} className="update-btn">
+          Update Profile
         </button>
-        </section>
-      </div>
-    </>
-  );
+      </section>
+
+      <section>
+        <h3>Change Password</h3>
+        <label htmlFor="current-password">Current Password</label>
+        <input
+          id="current-password"
+          type="password"
+          placeholder="Current Password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+        />
+
+        <label htmlFor="new-password">New Password</label>
+        <input
+          id="new-password"
+          type="password"
+          placeholder="New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+
+        <button onClick={handleChangePassword} className="update-btn">
+          Change Password
+        </button>
+      </section>
+
+      <section>
+        <h3 style={{ color: "red" }}>Area 51</h3>
+        <button onClick={handleDeleteAccount} className="delete-btn">
+          Delete My Account
+        </button>
+      </section>
+    </div>
+  </>
+);
 }

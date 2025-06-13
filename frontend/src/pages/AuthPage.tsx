@@ -87,8 +87,11 @@ export default function AuthPage() {
             required
           />
           <button type="submit">{isLogin ? "Login" : "Register"}</button>
-        </form>
-
+        
+          <p className="forgot-link">
+            <a href="/forgot-password">Forgot Password?</a>
+          </p>
+          </form>
         <p>
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button

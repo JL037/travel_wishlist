@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, BackgroundTasks, Body
+from pydantic import EmailStr
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,15 +7,16 @@ from sqlalchemy.exc import IntegrityError
 from datetime import timedelta
 from jose import jwt, JWTError
 
-from app.schema.user import UserRead, UserCreate, LoginData, UserUpdate
+from app.schema.user import UserRead, UserCreate, LoginData, UserUpdate, ChangePasswordRequest, ResetPasswordRequest
 from app.models.users import User
 from app.database import get_db
 from app.utils.security import (
-    create_access_token, hash_password, verify_password, create_refresh_token
+    create_access_token, hash_password, verify_password, create_refresh_token, create_reset_token, verify_reset_token
 )
 from app.dependencies.auth import get_current_user
 from app.core.config import settings
 from app.crud import store_refresh_token, get_refresh_token, delete_refresh_token
+from app.services.email import send_password_reset_email
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -175,11 +177,11 @@ async def test_endpoint():
     return {"message": "Hello from backend!"}
 
 @router.post("/change-password")
-async def change_password(current_password: str, new_password: str, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
-    if not verify_password(current_password, current_user.hashed_password):
+async def change_password(password_data: ChangePasswordRequest, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if not verify_password(password_data.current_password, current_user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect current password")
     
-    current_user.hashed_password = hash_password(new_password)
+    current_user.hashed_password = hash_password(password_data.new_password)
     db.add(current_user)
     await db.commit()
     await db.refresh(current_user)
@@ -216,3 +218,32 @@ async def delete_account(db: AsyncSession = Depends(get_db), current_user: User 
     await db.delete(current_user)
     await db.commit()
     return {"message": "Account deleted successfully"}
+
+@router.post("/forgot-password")
+async def forgot_password(background_tasks: BackgroundTasks, email: EmailStr = Body(...), db: AsyncSession = Depends(get_db)):
+    user = await db.scalar(select(User).where(User.email == email))
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    token = create_reset_token(email)
+
+    await send_password_reset_email(background_tasks, to_email=email, reset_token=token)
+
+    return {"reset_token": token}
+
+
+@router.post("/reset-password")
+async def reset_password(pwd_data: ResetPasswordRequest, db: AsyncSession = Depends(get_db)):
+    email = verify_reset_token(pwd_data.token)
+    if not email:
+        raise HTTPException(status_code=400, detail="Invalid or expired token")
+    
+    user = await db.scalar(select(User).where(User.email == email))
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    user.hashed_password = hash_password(pwd_data.new_password)
+    db.add(user)
+    await db.commit()
+    await db.refresh(user)
+    return {"message": "Password reset successfully"}

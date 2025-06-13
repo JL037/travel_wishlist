@@ -193,7 +193,7 @@ export default function WishlistPage() {
 
         <div className="wishlist-items-container">
           {wishlist.length === 0 ? (
-            <p>No items in your wishlist yet.</p>
+            <p className="wishlist-empty">No items in your wishlist yet.</p>
           ) : (
             wishlist.map((item) => (
               <div key={item.id} className="wishlist-item-card">

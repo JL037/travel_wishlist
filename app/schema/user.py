@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import EmailStr
 from typing import Optional
 from datetime import datetime
 from app.models.users import UserRole
@@ -39,3 +40,12 @@ class LoginData(BaseModel):
 
 class UserInDB(UserRead):
     hashed_password: str
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+    
