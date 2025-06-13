@@ -7,10 +7,20 @@
   background-color: rgba(0, 0, 0, 0.6);
   padding: 0.6rem;
   border-radius: 8px;
-  margin-top: 6rem;
+  margin-top: 2rem;
+  margin-right: 1rem;
   width: 250px;
   flex: 0 0 auto;
 }
+
+.wishlist-empty {
+  color: #f7f4f4;
+  font-style: italic;
+  font-size: 2rem;
+  margin-top: 2rem;
+  font-weight: bold;
+}
+
 
 .wishlist-form input,
 .wishlist-form select {
@@ -20,6 +30,8 @@
   padding: 0.3rem;
   border-radius: 4px;
   font-size: 0.9rem;
+  width: 90%;
+  max-width: 260px;
 }
 
 .wishlist-form input:focus,
@@ -50,9 +62,18 @@
   gap: 1rem;
   align-items: flex-start;
   padding: 1rem;
-  margin-top: 1rem;
-  flex-wrap: wrap; /* 💡 Wrap items on smaller screens */
+  background-color: rgba(0, 0, 0, 0.6);
+  margin: 1rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  border-radius: 8px;
+  max-width: 800px;           /* give it some limit */
+  width: auto;
+  box-sizing: border-box;
+  justify-content: flex-start; /* ⬅️ ensures it's pinned left */
 }
+
+
 
 .wishlist-items-container {
   display: grid;
@@ -98,14 +119,20 @@
   .wishlist-container {
     flex-direction: column; /* stack form on top of items */
     align-items: stretch;
+    margin: 1rem auto;
   }
 
   .wishlist-form {
-    width: 100%;
-    margin-top: 2rem;
+    width: 90%;
+    margin: 2rem 1rem 2rem 1rem;
   }
 
   .wishlist-items-container {
     margin-top: 2rem;
   }
 }
+
+  .wishlist-empty {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }

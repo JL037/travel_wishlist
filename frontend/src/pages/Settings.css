@@ -1,0 +1,91 @@
+.settings-container {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+.settings-container section {
+  margin-bottom: 2.5rem;
+}
+
+.settings-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.settings-container label {
+  display: block;
+  margin: 0.5rem 0 0.2rem;
+  font-weight: 600;
+}
+
+.settings-container input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #222;
+  color: #fff;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.settings-container button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.settings-container .update-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.settings-container .update-btn:hover {
+  background-color: #218838;
+}
+
+.settings-container .delete-btn {
+  background-color: #d90429;
+  color: white;
+}
+
+.settings-container .delete-btn:hover {
+  background-color: #a4001e;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .settings-container {
+    margin: 3rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .settings-container h2 {
+    font-size: 1.25rem;
+  }
+
+  .settings-container input {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+
+  .settings-container button {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+}

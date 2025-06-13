@@ -141,14 +141,12 @@ export default function WishlistPage() {
             placeholder="Name"
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
-            required
           />
           <input
             type="text"
             placeholder="Description"
             value={newItemDescription}
             onChange={(e) => setNewItemDescription(e.target.value)}
-            required
           />
           <input
             type="text"
@@ -195,7 +193,7 @@ export default function WishlistPage() {
 
         <div className="wishlist-items-container">
           {wishlist.length === 0 ? (
-            <p>No items in your wishlist yet.</p>
+            <p className="wishlist-empty">No items in your wishlist yet.</p>
           ) : (
             wishlist.map((item) => (
               <div key={item.id} className="wishlist-item-card">

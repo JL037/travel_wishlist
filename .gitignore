@@ -93,3 +93,9 @@ poetry.lock
 
 # Typings (if using TypeScript type checking)
 typings/
+
+
+gitleaks_*.json
+*.gitleaks.*
+.env.bak
+.env.local

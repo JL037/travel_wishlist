@@ -45,6 +45,10 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+.weather-container input {
+  width: 90%;
+}
+
 /* Weather Checker Buttons */
 .weather-container button {
   display: block;
@@ -91,8 +95,8 @@ body {
 
   .weather-container,
   .travel-planner-container {
-    min-width: 100%;
-    max-width: 100%;
+    min-width: 90%;
+    max-width: 90%;
     width: 100%;
   }
 }

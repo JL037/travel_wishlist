@@ -7,6 +7,10 @@ import VisitedLocationsPage from "./pages/VisitedLocationsPage";
 import TestCalendar from "./components/TestCalendar";
 import PricingPage from "./pages/PricingPage";
 import FAQPage from "./pages/FAQPage";
+import SettingsPage from "./pages/Settings";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+
 
 export default function App() {
   return (
@@ -20,6 +24,9 @@ export default function App() {
         <Route path="/test-calendar" element={<TestCalendar />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/faq" element={<FAQPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
 
       </Routes>

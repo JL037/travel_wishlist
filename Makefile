@@ -38,4 +38,4 @@ lint: ## Run Ruff linter on the codebase
 	ruff check .
 
 psql: ## run postgresql
-	psql -U jaredlemler -h localhost -d travel_wishlist
+	docker-compose exec db psql -U jaredlemler -d travel_wishlist

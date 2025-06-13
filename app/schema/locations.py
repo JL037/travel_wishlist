@@ -10,7 +10,7 @@ from app.schema.validators import (
 
 
 class WishlistLocationBase(BaseModel):
-    name: str
+    name: Optional[str] = None
     city: Optional[str] = None
     country: Optional[str] = None
     description: str | None = None
@@ -21,7 +21,9 @@ class WishlistLocationBase(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_name(cls, v: str | None) -> str | None:
-        return strip_and_validate_not_empty(v)
+        if v is None or not v.strip():
+            return None
+        return v.strip()
 
     @field_validator("city")
     @classmethod
@@ -49,10 +51,10 @@ class WishlistLocationBase(BaseModel):
 
 
 class WishlistLocationCreate(WishlistLocationBase):
-    name: str
+    name: Optional[str] = None
     city: str
     country: str
-    description: str
+    description: Optional[str] = None
     visited: bool = False
 
 
@@ -91,7 +93,7 @@ class VisitedItemUpdate(VisitedLocationBase):
 class VisitedWithDetailsOut(BaseModel):
     id: int
     wishlist_id: int
-    name: str
+    name: Optional[str] = None
     city: str
     country: str
     description: Optional[str] = None

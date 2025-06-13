@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     SENTRY_DSN: str
     POSTGRES_DB: str
     OPEN_WEATHER_API_KEY: str
+    RESEND_API_KEY: str
 
     SECRET_KEY: str
     ALGORITHM: str

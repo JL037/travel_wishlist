@@ -9,10 +9,10 @@ class WishlistLocation(Base):
     __tablename__ = "wishlist_location"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str] = mapped_column(String, nullable=False)
+    name: Mapped[Optional[str]] = mapped_column(String, nullable=False)
     city: Mapped[str] = mapped_column(String, nullable=False)
     country: Mapped[str] = mapped_column(String, nullable=False)
-    description: Mapped[str] = mapped_column(String, nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     visited: Mapped[bool] = mapped_column(default=False)
     latitude: Mapped[float] = mapped_column(Float, nullable=True)
     longitude: Mapped[float] = mapped_column(Float, nullable=True)
@@ -20,7 +20,7 @@ class WishlistLocation(Base):
         DateTime(timezone=True), server_default=func.now()
     )
 
-    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     owner = relationship("User", back_populates="locations")
     visited_locations: Mapped[list["VisitedLocation"]] = relationship(
         back_populates="wishlist_location"
@@ -31,7 +31,7 @@ class VisitedLocation(Base):
     __tablename__ = "visited_location"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    owner_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     wishlist_id: Mapped[int] = mapped_column(
         ForeignKey("wishlist_location.id"), nullable=False
     )
