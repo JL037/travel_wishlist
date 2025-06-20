@@ -17,7 +17,8 @@ env/
 .env.*
 env.bak/
 .venv.bak/
-
+.env.development
+.env.production
 # IDEs & Editor settings
 .vscode/
 .idea/

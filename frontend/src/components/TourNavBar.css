@@ -1,0 +1,114 @@
+/* Navbar styling */
+.profile-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.profile-links.active {
+  position: absolute;
+  top: 100%;       /* below the navbar */
+  right: 0;
+  left: 0;
+  z-index: 1100;   /* high enough to appear above the map */
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.navbar-logo {
+  width: 50px;
+  margin-right: 10px;
+  filter: invert(1);
+}
+
+.profile-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.navbar-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.profile-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.profile-links button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.profile-links button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .profile-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 1100; /* Higher than Leaflet's 400+ layers */
+  }
+
+  .navbar-toggle {
+    display: block;
+    margin-left: auto;
+  }
+
+  .profile-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .profile-links.active {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1100; /* Same high value */
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-links button {
+    padding: 0.5rem 0;
+    text-align: left;
+  }
+
+  .profile-name {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+

@@ -7,6 +7,7 @@ export default function Navbar({ username }: { username?: string }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
+
   const handleLogout = async () => {
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
@@ -22,11 +23,7 @@ export default function Navbar({ username }: { username?: string }) {
 
   return (
     <div className="profile-navbar">
-      <img
-        src="/logo.png"
-        alt="TWL Logo"
-        className="navbar-logo"
-      />
+      <img src="/logo.png" alt="TWL Logo" className="navbar-logo" />
       <div className="profile-name">Adventurer {username || "Guest"}</div>
 
       <div className="navbar-right">
@@ -36,9 +33,10 @@ export default function Navbar({ username }: { username?: string }) {
 
         <div className={`profile-links ${menuOpen ? "active" : ""}`}>
           <button onClick={() => navigate("/profile")}>Profile</button>
+          <button onClick={() => navigate("/all-locations")}>All Locations</button>
           <button onClick={() => navigate("/wishlist")}>My Wishlist</button>
           <button onClick={() => navigate("/visited")}>Visited Locations</button>
-          <button onClick={() => navigate("/faq")}>FAQS</button>
+          <button onClick={() => navigate("/faq")}>FAQs</button>
           <button onClick={() => navigate("/pricing")}>Pricing</button>
           <button onClick={() => navigate("/settings")}>Settings</button>
           <button onClick={handleLogout}>Logout</button>

@@ -13,7 +13,7 @@ class WishlistLocationBase(BaseModel):
     name: Optional[str] = None
     city: Optional[str] = None
     country: Optional[str] = None
-    description: str | None = None
+    description: Optional[str] | None = None
     visited: bool = False
     latitude: Optional[float] = None
     longitude: Optional[float] = None
