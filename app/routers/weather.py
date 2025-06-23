@@ -8,10 +8,15 @@ router = APIRouter()
 @router.get("/weather")
 async def get_weather(
     city: str = Query(..., min_length=1),
-    country: str | None = Query(None)
+    country: str | None = Query(None),
+    state: str | None = Query(None)
 ):
-    # Combine city and country code for API query
-    query_param = f"{city},{country}" if country else city
+    parts = [city]
+    if state:
+        parts.append(state)
+    if country:
+        parts.append(country)
+    query_param = ",".join(parts)
 
     url = (
         f"https://api.openweathermap.org/data/2.5/weather?"

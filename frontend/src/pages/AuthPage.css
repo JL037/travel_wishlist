@@ -104,6 +104,35 @@ html, body, #root {
 .forgot-link a:hover {
   text-decoration: underline;
 }
+/* 👁️ Password visibility toggle container */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* 🧩 Password input with right padding for icon */
+.password-input {
+  width: 100%;
+  padding: 0.5rem;
+  padding-right: 2.5rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* 👁️ Eye icon placement */
+.eye-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ccc;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+}
 
 
 /* 🟩 Responsive tweaks for smaller devices */

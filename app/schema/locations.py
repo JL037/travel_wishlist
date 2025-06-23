@@ -17,6 +17,8 @@ class WishlistLocationBase(BaseModel):
     visited: bool = False
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    notes: Optional[str] = None
+    proposed_date: Optional[datetime] = None
 
     @field_validator("name")
     @classmethod
@@ -56,6 +58,8 @@ class WishlistLocationCreate(WishlistLocationBase):
     country: str
     description: Optional[str] = None
     visited: bool = False
+    notes: Optional[str] = None
+    proposed_date: Optional[datetime] = None
 
 
 
@@ -65,11 +69,19 @@ class WishlistLocationUpdate(WishlistLocationBase):
     visited: bool | None = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    notes: Optional[str] = None
+    proposed_date: Optional[datetime] = None
+    visited: Optional[bool] = None
 
 
 class WishlistLocationOut(WishlistLocationBase):
     id: int
     added_on: datetime
+    city: str
+    country: str
+    notes: Optional[str] = None
+    proposed_date: Optional[datetime] = None
+    visited: bool
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -87,7 +99,8 @@ class VisitedItemCreate(VisitedLocationBase):
 
 
 class VisitedItemUpdate(VisitedLocationBase):
-    pass
+    notes: Optional[str] = None
+    visited_on: Optional[datetime] = None
 
 
 class VisitedWithDetailsOut(BaseModel):

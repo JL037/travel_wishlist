@@ -23,8 +23,10 @@ export default function TourNavbar({ username = "Guest" }: Props) {
 
         <div className={`profile-links ${menuOpen ? "active" : ""}`}>
           <button onClick={() => navigate("/tour/profile")}>Profile</button>
-          <button onClick={() => navigate("/tour/wishlist")}>My Wishlist</button>
-          <button onClick={() => navigate("/tour/visited")}>Visited</button>
+          <button onClick={() => navigate("/tour/all-locations")}>Travel Map</button>
+          {/* Uncomment if you have these pages */}
+          {/* <button onClick={() => navigate("/tour/wishlist")}>My Wishlist</button>
+          <button onClick={() => navigate("/tour/visited")}>Visited</button> */}
           <button onClick={() => navigate("/tour/faq")}>FAQs</button>
           <button onClick={() => navigate("/tour/pricing")}>Pricing</button>
           <button onClick={() => navigate("/login")}>Login / Register</button>

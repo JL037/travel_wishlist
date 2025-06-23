@@ -1,25 +1,43 @@
 import TourNavbar from "../../components/TourNavBar";
-import WeatherWidget from "../../components/WeatherWidget";
-import TravelPlanner from "../../components/TravelPlanner";
-import "../ProfilePage.css"; // reuse if you already have some styles
+import TourWeatherWidget from "../../components/TourWeatherWidget";
+import TourTravelPlanner from "../../components/TourTravelPlanner";
+import "../ProfilePage.css";
 
 export default function TourProfilePage() {
- 
-//   const mockUser = {
-//     username: "AdventurerGuest",
-//     email: "guest@example.com",
-//     created_at: "2025-01-01",
-//   };
-
   return (
     <div>
       <TourNavbar />
+
       <div className="profile-content">
+        {/* 🔹 Mock Weather Widget */}
         <div className="weather-container">
-          <WeatherWidget />
+          <TourWeatherWidget
+            city="Tokyo"
+            country="JP"
+            temperature={72}
+            description="Clear skies"
+            icon="01d"
+          />
         </div>
+
+        {/* 🔹 Mock Travel Plans */}
         <div className="travel-planner-container">
-          <TravelPlanner />
+          <TourTravelPlanner
+            mockPlans={[
+              {
+                location: "Barcelona",
+                start_date: "2025-07-10",
+                end_date: "2025-07-17",
+                notes: "Visit the Sagrada Familia!",
+              },
+              {
+                location: "Reykjavik",
+                start_date: "2025-08-01",
+                end_date: "2025-08-05",
+                notes: "Chase the northern lights!",
+              },
+            ]}
+          />
         </div>
       </div>
     </div>

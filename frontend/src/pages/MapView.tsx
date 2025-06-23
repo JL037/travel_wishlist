@@ -14,6 +14,13 @@ type Location = {
   city?: string;
   country?: string;
   type: 'wishlist' | 'visited';
+  notes?: string;
+  proposed_date?: string;
+  visited_on?: string;
+};
+type Props = {
+  locations: Location[];
+  onLocationClick?: (location: Location) => void;
 };
 
 // 🔸 Define custom icons
@@ -35,7 +42,7 @@ const visitedIcon = new L.Icon({
   // shadowSize: [41, 41],
 });
 
-export default function MapView({ locations }: { locations: Location[] }) {
+export default function MapView({ locations, onLocationClick }: Props) {
   const defaultCenter: LatLngExpression = [20, 0];
 
   return (
@@ -52,7 +59,19 @@ export default function MapView({ locations }: { locations: Location[] }) {
         >
           <Popup>
             <strong>{loc.name}</strong><br />
-            {loc.city}, {loc.country}
+            {loc.city}, {loc.country}<br />
+            {loc.notes && <p><em>{loc.notes}</em></p>}
+            {loc.type === 'wishlist' && loc.proposed_date && (
+              <p> Planned: {loc.proposed_date}</p>
+            )}
+            {loc.type === 'visited' && loc.visited_on && (
+              <p> Visited: {loc.visited_on}</p>
+            )}
+            {onLocationClick && (
+              <button onClick={() => onLocationClick(loc)} style={{ marginTop: "5px" }}>
+                Edit
+              </button>
+            )}
           </Popup>
         </Marker>
       ))}

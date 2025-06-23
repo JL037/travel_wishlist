@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {FaEye, FaEyeSlash} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./AuthPage.css";
 
@@ -8,6 +9,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,13 +81,33 @@ export default function AuthPage() {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+          <div className="password-wrapper">
+         <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="password-input"
           />
+         <span
+          className="eye-toggle" onClick={() => setShowPassword((prev) => !prev)}
+          style={{
+          position: "absolute",
+          right: "10px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          cursor: "pointer",
+          color: "#888",
+          fontSize: "1.1rem",
+          display: "flex",
+          alignItems: "center",
+          height: "100%"
+        }}
+          >
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+         </span>
+          </div>
           <button type="submit">{isLogin ? "Login" : "Register"}</button>
         
           <p className="forgot-link">

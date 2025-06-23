@@ -33,9 +33,9 @@ export default function Navbar({ username }: { username?: string }) {
 
         <div className={`profile-links ${menuOpen ? "active" : ""}`}>
           <button onClick={() => navigate("/profile")}>Profile</button>
-          <button onClick={() => navigate("/all-locations")}>All Locations</button>
-          <button onClick={() => navigate("/wishlist")}>My Wishlist</button>
-          <button onClick={() => navigate("/visited")}>Visited Locations</button>
+          <button onClick={() => navigate("/all-locations")}>Travel Map</button>
+          {/* <button onClick={() => navigate("/wishlist")}>My Wishlist</button>
+          <button onClick={() => navigate("/visited")}>Visited Locations</button> */}
           <button onClick={() => navigate("/faq")}>FAQs</button>
           <button onClick={() => navigate("/pricing")}>Pricing</button>
           <button onClick={() => navigate("/settings")}>Settings</button>
