@@ -19,7 +19,7 @@ def test_create_and_login(client):
     )
     assert login.status_code == 200
     assert "access_token" in login.json()
-    print("✅ TOKEN:", login.json()["access_token"])
+   
 
 
 def test_access_protected_route(client):
@@ -44,7 +44,6 @@ def test_access_protected_route(client):
 
     # Step 4: Try accessing a protected route
     response = client.get("/wishlist/")
-    print("Protected route response:", response.json())
     assert (
         response.status_code == 200 or response.status_code == 404
     )  # Adjust if list is empty

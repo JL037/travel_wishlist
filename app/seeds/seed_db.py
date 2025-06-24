@@ -9,7 +9,7 @@ from datetime import timezone, datetime
 
 
 def seed():
-    print("Seeding the database...")
+    
     db: Session = SessionLocal()
 
     # Clear old data
@@ -53,7 +53,7 @@ def seed():
     db.add_all([wishlist, visited])
     db.commit()
     db.close()
-    print("✅ Seeded DB with 1 user, 1 wishlist, 1 visited")
+   
 
 
 if __name__ == "__main__":

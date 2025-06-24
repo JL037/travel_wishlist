@@ -41,7 +41,6 @@ async def create_wishlist_location(
             await db.refresh(visited)
         except SQLAlchemyError as e:
             await db.rollback()
-            print("🔥 DB error while inserting VisitedLocation:", e)
             raise
 
     return new_location
