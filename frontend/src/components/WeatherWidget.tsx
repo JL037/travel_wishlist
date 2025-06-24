@@ -81,16 +81,17 @@ export default function WeatherWidget() {
         />
         <input
           type="text"
-          placeholder="State (e.g., CA)"
+          placeholder="State"
           value={stateInput}
           onChange={(e) => setStateInput(e.target.value)}
         />
         <select
+          className="weather-input"
           value={countryInput}
           onChange={(e) => setCountryInput(e.target.value)}
         >
           <option value="">Select a country</option>
-                <option value="US">United States</option>
+                <option value="United States">United States</option>
                 <option value="CA">Canada</option>
                 <option value="MX">Mexico</option>
                 <option value="JP">Japan</option>

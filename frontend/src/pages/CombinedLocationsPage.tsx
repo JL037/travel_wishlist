@@ -29,6 +29,7 @@ export default function AllLocationsPage() {
   const [error, setError] = useState<string>('');
   const [newItemCity, setNewItemCity] = useState("");
   const [newItemCountry, setNewItemCountry] = useState("");
+  const [markAsVisited, setMarkAsVisited] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -58,13 +59,19 @@ export default function AllLocationsPage() {
       const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/wishlist`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ city: newItemCity, country: newItemCountry }),
+        body: JSON.stringify({ city: newItemCity, country: newItemCountry, visited: markAsVisited }),
       });
       if (!response.ok) throw new Error("Failed to add wishlist item.");
       const newItem = await response.json();
-      setWishlist((prev) => [...prev, newItem]);
+
+      if (markAsVisited) {
+        setVisited((prev) => [...prev, {...newItem, type: "visited" }]);
+      } else {
+        setWishlist((prev) => [...prev, {...newItem, type: "wishlist" }]);
+      }
       setNewItemCity("");
       setNewItemCountry("");
+      setMarkAsVisited(false);
     } catch (err) {
       console.error(err);
       alert("Failed to add wishlist item.");
@@ -74,6 +81,7 @@ export default function AllLocationsPage() {
   const handleEdit = async (id: number) => {
     const confirmVisited = confirm("Mark as visited?");
     if (!confirmVisited) return;
+
     try {
       const response = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/wishlist/${id}`, {
         method: "PATCH",
@@ -82,6 +90,7 @@ export default function AllLocationsPage() {
       });
       if (!response.ok) throw new Error("Failed to update wishlist item.");
       const updatedItem = await response.json();
+
       setWishlist((prev) => prev.filter((item) => item.id !== id));
       setVisited((prev) => [...prev, { ...updatedItem, type: "visited" }]);
     } catch (err) {
@@ -116,6 +125,7 @@ export default function AllLocationsPage() {
       });
       if (!response.ok) throw new Error("Failed to update location.");
       const updated = await response.json();
+
       if (endpoint.includes("wishlist")) {
         setWishlist(prev => prev.map(loc => loc.id === id ? { ...loc, ...updated, type: "wishlist" } : loc));
       } else {
@@ -155,46 +165,76 @@ export default function AllLocationsPage() {
                 required
               >
                 <option value="">Select a country</option>
-                <option value="United States">United States</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Australia">Australia</option>
+                <option value="Austria">Austria</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Brazil">Brazil</option>
                 <option value="Canada">Canada</option>
-                <option value="Mexico">Mexico</option>
-                <option value="Japan">Japan</option>
-                <option value="Italy">Italy</option>
+                <option value="Chile">Chile</option>
+                <option value="China">China</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Costa Rica">Costa Rica</option>
+                <option value="Croatia">Croatia</option>
+                <option value="Cuba">Cuba</option>
+                <option value="Czech Republic">Czech Republic</option>
+                <option value="Denmark">Denmark</option>
+                <option value="Dominican Republic">Dominican Republic</option>
+                <option value="Egypt">Egypt</option>
+                <option value="Finland">Finland</option>
                 <option value="France">France</option>
                 <option value="Germany">Germany</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Australia">Australia</option>
-                <option value="Brazil">Brazil</option>
-                <option value="India">India</option>
-                <option value="China">China</option>
-                <option value="South Africa">South Africa</option>
-                <option value="Russia">Russia</option>
-                <option value="Spain">Spain</option>
-                <option value="Argentina">Argentina</option>
-                <option value="South Korea">South Korea</option>
-                <option value="Thailand">Thailand</option>
-                <option value="Netherlands">Netherlands</option>
-                <option value="Sweden">Sweden</option>
-                <option value="Norway">Norway</option>
-                <option value="Finland">Finland</option>
-                <option value="Denmark">Denmark</option>
-                <option value="Poland">Poland</option>
                 <option value="Greece">Greece</option>
-                <option value="Portugal">Portugal</option>
-                <option value="Turkey">Turkey</option>
-                <option value="Egypt">Egypt</option>
-                <option value="Vietnam">Vietnam</option>
-                <option value="Indonesia">Indonesia</option>
-                <option value="Philippines">Philippines</option>
-                <option value="Malaysia">Malaysia</option>
-                <option value="Singapore">Singapore</option>
-                <option value="New Zealand">New Zealand</option>
-                <option value="Ireland">Ireland</option>
-                <option value="Czech Republic">Czech Republic</option>
                 <option value="Hungary">Hungary</option>
+                <option value="Iceland">Iceland</option>
+                <option value="India">India</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Israel">Israel</option>
+                <option value="Italy">Italy</option>
+                <option value="Jamaica">Jamaica</option>
+                <option value="Japan">Japan</option>
+                <option value="Jordan">Jordan</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Maldives">Maldives</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Morocco">Morocco</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="Norway">Norway</option>
+                <option value="Panama">Panama</option>
+                <option value="Peru">Peru</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Poland">Poland</option>
+                <option value="Portugal">Portugal</option>
                 <option value="Romania">Romania</option>
+                <option value="Russia">Russia</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Slovenia">Slovenia</option>
+                <option value="South Africa">South Africa</option>
+                <option value="South Korea">South Korea</option>
+                <option value="Spain">Spain</option>
+                <option value="Sweden">Sweden</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Turkey">Turkey</option>
                 <option value="Ukraine">Ukraine</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
+                <option value="Vietnam">Vietnam</option>
               </select>
+              <div className="mark-visited-checkbox">
+                <input
+                  id="markAsVisited"
+                  type="checkbox"
+                  checked={markAsVisited}
+                  onChange={(e) => setMarkAsVisited(e.target.checked)}
+                />
+                <label htmlFor="markAsVisited">Mark as visited</label>
+              </div>
               <button type="submit">Add to Wishlist</button>
             </form>
             {wishlist.length === 0 ? (
