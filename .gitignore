@@ -100,3 +100,5 @@ gitleaks_*.json
 *.gitleaks.*
 .env.bak
 .env.local
+*.pdf
+*.Zone.Identifier
