@@ -142,7 +142,7 @@ export default function TourLocationsPage() {
 
     setVisited([
       {
-        id: 3,
+        id: 11,
         name: "Paris",
         city: "Paris",
         country: "France",
@@ -153,7 +153,7 @@ export default function TourLocationsPage() {
         type: "visited",
       },
       {
-        id: 4,
+        id: 12,
         name: "Amsterdam",
         city: "Amsterdam",
         country: "Netherlands",
@@ -164,7 +164,7 @@ export default function TourLocationsPage() {
         type: "visited",
       },
       {
-        id: 5,
+        id: 13,
         name: "Bangkok",
         city: "Bangkok",
         country: "Thailand",
@@ -175,7 +175,7 @@ export default function TourLocationsPage() {
         type: "visited",
       },
       {
-        id: 6,
+        id: 14,
         name: "Berlin",
         city: "Berlin",
         country: "Germany",
@@ -186,7 +186,7 @@ export default function TourLocationsPage() {
         type: "visited",
       },
       {
-        id: 7,
+        id: 15,
         name: "Sydney",
         city: "Sydney",
         country: "Australia",
@@ -197,7 +197,7 @@ export default function TourLocationsPage() {
         type: "visited",
       },
       {
-        id: 8,
+        id: 16,
         name: "Cairo",
         city: "Cairo",
         country: "Egypt",
@@ -208,7 +208,7 @@ export default function TourLocationsPage() {
         type: "visited",
       },
       {
-        id: 9,
+        id: 17,
         name: "Helsinki",
         city: "Helsinki",
         country: "Finland",
@@ -219,7 +219,7 @@ export default function TourLocationsPage() {
         type: "visited",
       },
       {
-        id: 10,
+        id: 18,
         name: "Mexico City",
         city: "Mexico City",
         country: "Mexico",
