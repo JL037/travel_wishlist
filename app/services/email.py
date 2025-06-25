@@ -1,6 +1,9 @@
 import httpx
+import logging
 from fastapi import BackgroundTasks
 from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 RESEND_API_URL = "https://api.resend.com/emails"
 
@@ -26,13 +29,17 @@ async def _send_email(to: str, subject: str, html: str):
     }
 
     data = {
-        "from": "Travel Wishlist <onboarding@resend.dev>",
+        "from": "Travel Wishlist <noreply@travelwishlist.app>",
         "to": [to],
         "subject": subject,
         "html": html,
     }
     
     async with httpx.AsyncClient() as client:
-        response = await client.post(RESEND_API_URL, headers=headers, json=data)
-
-        response.raise_for_status()
+        try:
+            response = await client.post(RESEND_API_URL, headers=headers, json=data)
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            logger.error(f"Email failed to send: {exc.response.status_code} - {exc.response.text}")
+        except Exception as e:
+            logger.exception("Unexpected error sending email")
