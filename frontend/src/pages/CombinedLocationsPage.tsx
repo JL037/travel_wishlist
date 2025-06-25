@@ -279,7 +279,10 @@ export default function AllLocationsPage() {
           </section>
         </div>
         <div className="visited-map-container">
-          <MapView locations={allLocations} onLocationClick={setSelectedLocation} />
+          <MapView
+            locations={allLocations.filter(loc => typeof loc.latitude === 'number' && typeof loc.longitude === 'number')}
+            onLocationClick={setSelectedLocation}
+          />
         </div>
       </div>
 
