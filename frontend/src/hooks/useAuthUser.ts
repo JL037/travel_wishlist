@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../api/fetchWithAuth";
 
-export default function useAuth() {
+export default function useAuthUser() {
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -13,10 +14,12 @@ export default function useAuth() {
         setUser(data);
       } catch {
         setUser(null);  // if error, set null
+      } finally {
+        setLoading(false);
       }
     };
     fetchProfile();
   }, []);
 
-  return user;
+  return { user, loading };
 }

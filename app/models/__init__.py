@@ -6,4 +6,4 @@ from .location import WishlistLocation
 from .users import User
 
 
-print("✅ app.models.__init__.py ran")
+

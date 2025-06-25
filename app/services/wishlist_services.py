@@ -44,7 +44,6 @@ async def create_location(
             await db.commit()
         except Exception as e:
             await db.rollback()
-            print("❌ DB error while inserting VisitedLocation:", e)
             raise
 
     return new_location

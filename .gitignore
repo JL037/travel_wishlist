@@ -17,7 +17,8 @@ env/
 .env.*
 env.bak/
 .venv.bak/
-
+.env.development
+.env.production
 # IDEs & Editor settings
 .vscode/
 .idea/
@@ -99,3 +100,5 @@ gitleaks_*.json
 *.gitleaks.*
 .env.bak
 .env.local
+*.pdf
+*.Zone.Identifier

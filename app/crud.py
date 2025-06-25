@@ -41,7 +41,6 @@ async def create_wishlist_location(
             await db.refresh(visited)
         except SQLAlchemyError as e:
             await db.rollback()
-            print("🔥 DB error while inserting VisitedLocation:", e)
             raise
 
     return new_location
@@ -104,24 +103,29 @@ async def delete_wishlist_item(db: AsyncSession, item_id: int):
     return db_item
 
 
+from sqlalchemy import delete
+from datetime import datetime, timezone
+from app.models.refresh_tokens import RefreshToken
+
 async def store_refresh_token(db: AsyncSession, user_id: int, token: str):
-    # 🟣 First, delete any existing token for this user
-    result = await db.execute(select(RefreshToken).where(RefreshToken.user_id == user_id))
-    existing_token = result.scalar_one_or_none()
-    if existing_token:
-        await db.delete(existing_token)
-        await db.commit()
-    
-    # 🟣 Now store the new token
+    #  Delete any old token tied to this user (handles no-logout scenario)
+    await db.execute(
+        delete(RefreshToken).where(RefreshToken.user_id == user_id)
+    )
+    await db.commit()
+
+    #  Create and store the new token
     new_token = RefreshToken(
         user_id=user_id,
         token=token,
-        created_at=datetime.now(timezone.utc).replace(tzinfo=None),
+        created_at=datetime.now(timezone.utc),  # timezone-aware
     )
     db.add(new_token)
     await db.commit()
     await db.refresh(new_token)
+
     return new_token
+
 
 
 

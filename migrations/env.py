@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv(".env", override=True)  # Optional
 
 
-print("FROM ENV.PY: DATABASE_URL =", settings.DATABASE_URL)
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -79,7 +79,6 @@ def run_migrations_online() -> None:
         context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
-            print("📦 Tables Alembic sees:", Base.metadata.tables.keys())
             context.run_migrations()
 
 

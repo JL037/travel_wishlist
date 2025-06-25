@@ -19,8 +19,9 @@ secure: ## Run Bandit and Gitleaks for security scan
 clean: ## Remove __pycache__ folders
 	find . -type d -name "__pycache__" -exec rm -r {} +
 
-docker: ## Start all Docker services (with build, detached)
-	docker-compose up --build -d
+docker:
+	cp .env.$(ENVIRONMENT) .env && docker-compose up --build -d
+
 
 docker-stop: ## Stop and remove Docker containers
 	docker-compose down

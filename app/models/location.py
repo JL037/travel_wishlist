@@ -16,6 +16,8 @@ class WishlistLocation(Base):
     visited: Mapped[bool] = mapped_column(default=False)
     latitude: Mapped[float] = mapped_column(Float, nullable=True)
     longitude: Mapped[float] = mapped_column(Float, nullable=True)
+    proposed_date: Mapped[Optional[DateTime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     added_on: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -40,6 +42,7 @@ class VisitedLocation(Base):
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     latitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     longitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    
 
 
     owner: Mapped["User"] = relationship(back_populates="visited_locations")

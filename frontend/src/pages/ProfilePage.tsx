@@ -11,7 +11,6 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
-    console.log("🚨 Starting fetchProfile");
     const fetchProfile = async () => {
       try {
         const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);

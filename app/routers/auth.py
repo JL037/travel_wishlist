@@ -167,8 +167,18 @@ async def logout(request: Request, db: AsyncSession = Depends(get_db)):
         await delete_refresh_token(db, refresh_token)
 
     response = JSONResponse(content={"message": "Logged out"})
-    response.delete_cookie("access_token")
-    response.delete_cookie("refresh_token")
+    response.delete_cookie(
+        key="access_token",
+        httponly=True,
+        samesite="none",
+        secure=True,
+    )
+    response.delete_cookie(
+        key="refresh_token",
+        httponly=True,
+        samesite="none",
+        secure=True,
+    )
     return response
 
 

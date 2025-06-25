@@ -9,6 +9,7 @@ type Location = {
   name: string;
   latitude: number;
   longitude: number;
+  type: "wishlist" | "visited";
 };
 
 export default function VisitedLocationsPage() {
