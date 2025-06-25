@@ -14,7 +14,8 @@ export default function Navbar({ username }: { username?: string }) {
         method: "POST",
         credentials: "include",
       });
-      navigate("/");
+      window.location.href = "/";
+      
     } catch (err) {
       console.error("Logout failed:", err);
       alert("Failed to logout. Please try again!");

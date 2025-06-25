@@ -2,33 +2,24 @@ import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../api/fetchWithAuth";
 import Navbar from "../components/Navbar";
 import "./Settings.css";
+import useAuthUser from "../hooks/useAuthUser";
 
 export default function SettingsPage() {
-  const [user, setUser] = useState<any>(null);
+  const { user, loading } = useAuthUser();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  // ✅ Fetch user on mount
+  //  Fetch user on mount
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
-        if (!res.ok) throw new Error("Failed to fetch profile");
-        const data = await res.json();
-        setUser(data);
-        setUsername(data.username || "");
-        setEmail(data.email || "");
-      } catch (err) {
-        console.error(err);
-        alert("Failed to fetch user profile");
-      }
-    };
-    fetchProfile();
-  }, []);
+    if (user) {
+      setUsername(user.username || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
 
-  // ✅ Handle profile update
+  //  Handle profile update
   const handleProfileUpdate = async () => {
     try {
       const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`, {
@@ -44,7 +35,7 @@ export default function SettingsPage() {
     }
   };
 
-  // ✅ Handle password change
+  //  Handle password change
   const handleChangePassword = async () => {
     try {
       const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/change-password`, {
@@ -66,10 +57,9 @@ export default function SettingsPage() {
   };
 
   const handleDeleteAccount = async () => {
-    const confirmed = confirm(
+    if (!confirm(
         "Are you sure you want to delete your account? This action is permanent."
-    );
-    if (!confirmed) return;
+    )) return;
 
     try{
         const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/delete-account`, {
@@ -85,19 +75,19 @@ export default function SettingsPage() {
       }
   };
 
-  // 🟨 Optional loading state
-  if (user === null) {
-    return (
-      <p style={{ textAlign: "center", marginTop: "2rem", color: "#999" }}>
-        Loading profile...
-      </p>
-    );
+  if (loading) {
+    return <p style={{ textAlign: "center", marginTop: "2rem", color: "#999"}}>Loading profile...</p>;
+  }
+
+  if (!user) {
+    window.location.href = "/login";
+    return null;
   }
 
   // ✅ Page content
 return (
   <>
-    <Navbar username={user?.username} />
+    <Navbar username={user.username} />
 
     <div className="settings-container">
       <h2>Settings</h2>

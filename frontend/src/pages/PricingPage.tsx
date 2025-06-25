@@ -1,33 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./PricingPage.css";
-import { fetchWithAuth } from "../api/fetchWithAuth";
+import useAuthUser from "../hooks/useAuthUser";
 import Navbar from "../components/Navbar";
 
 export default function PricingPage() {
+  const { user, loading } = useAuthUser();
   const [thankYou, setThankYou] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "4rem", color: "#aaa"}}>
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-      const fetchProfile = async () => {
-        try {
-          const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
-          if (!res.ok) throw new Error("Failed to fetch profile");
-          const data = await res.json();
-          setUser(data);
-        } catch (err) {
-          console.error(err);
-          alert("Failed to fetch profile. Please refresh!");
-        }
-      };
-      fetchProfile();
-    }, []);
+  if (!user) {
+    window.location.href = "/login";
+    return null;
+  }
+ 
   const handleClick = () => {
     setThankYou(true);
   };
 
   return (
     <div>
-      <Navbar username={user?.username} /> {/* 🔥 Navbar at the top */}
+      <Navbar username={user.username} /> {/* 🔥 Navbar at the top */}
     <div className="pricing-header-box">
       <div className="pricing-container">
         <h1 className="pricing-title">Pricing</h1>

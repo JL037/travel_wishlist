@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import MapView from './MapView';
 import LocationDetailsModal from '../components/LocationDetailsModal';
 import './AllLocationsPage.css';
+import useAuthUser from '../hooks/useAuthUser';
 
 // Extend Location type
 type Location = {
@@ -22,7 +23,7 @@ type Location = {
 };
 
 export default function AllLocationsPage() {
-  const [user, setUser] = useState<any>(null);
+  const {user, loading} = useAuthUser();
   const [wishlist, setWishlist] = useState<Location[]>([]);
   const [visited, setVisited] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
@@ -34,15 +35,13 @@ export default function AllLocationsPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [userRes, wishlistRes, visitedRes] = await Promise.all([
-          fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`),
+        const [wishlistRes, visitedRes] = await Promise.all([
           fetchWithAuth(`${import.meta.env.VITE_API_URL}/wishlist`),
           fetchWithAuth(`${import.meta.env.VITE_API_URL}/visited`),
         ]);
-        if (!userRes.ok || !wishlistRes.ok || !visitedRes.ok) {
+        if (!wishlistRes.ok || !visitedRes.ok) {
           throw new Error('Failed to load one or more resources.');
         }
-        setUser(await userRes.json());
         setWishlist(await wishlistRes.json());
         setVisited(await visitedRes.json());
       } catch (err) {
@@ -141,6 +140,15 @@ export default function AllLocationsPage() {
     ...visited.map((loc) => ({ ...loc, type: "visited" as const })),
     ...wishlist.map((loc) => ({ ...loc, type: "wishlist" as const })),
   ];
+
+  if (loading) {
+    return <p style={{ textAlign: "center", marginTop: "4rem", color: "#aaa" }}>Loading map...</p>;
+  }
+
+  if (!user) {
+    window.location.href = "/login";
+    return null;
+  }
 
   if (error) return <p style={{ color: "red", textAlign: "center" }}>{error}</p>;
 

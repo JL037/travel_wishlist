@@ -1,48 +1,28 @@
-import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import "./ProfilePage.css";
 import WeatherWidget from "../components/WeatherWidget";
 import TravelPlanner from "../components/TravelPlanner";
-import { fetchWithAuth } from "../api/fetchWithAuth";
+import useAuthUser from "../hooks/useAuthUser";
 
 export default function ProfilePage() {
-  
+  const {user, loading} = useAuthUser();
 
-  const [profile, setProfile] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
-        
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch profile");
-        }
-
-        const data = await res.json();
-        
-        setProfile(data);
-      } catch (err) {
-        console.error("Error fetching profile:", err);
-        alert("Failed to fetch profile. Please try again!");
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  if (!profile) {
+  if (loading) {
     return (
-      <div style={{ textAlign: "center", color: "#aaa", marginTop: "4rem" }}>
+      <div style={{ textAlign: "center", color: "#aaa", marginTop: "4rem"}}>
         <p>Loading profile data...</p>
-      </div>
+        </div>
     );
+  }
+
+  if (!user) {
+    window.location.href = "/login";
+    return null;
   }
 
   return (
     <div>
-      <Navbar username={profile.username} />
+      <Navbar username={user.username} />
       <div className="profile-content">
         <div className="weather-container">
           <WeatherWidget />

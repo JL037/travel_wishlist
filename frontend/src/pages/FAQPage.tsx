@@ -1,25 +1,22 @@
 import Navbar from "../components/Navbar";
-import "./FAQPage.css"; // We'll create this next!
-import { useEffect, useState } from "react";
-import { fetchWithAuth } from "../api/fetchWithAuth";
+import "./FAQPage.css";
+import useAuthUser from "../hooks/useAuthUser";
+
 export default function FAQPage() {
-  const [user, setUser] = useState<any>(null);
+  const { user, loading } = useAuthUser();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await fetchWithAuth(`${import.meta.env.VITE_API_URL}/auth/me`);
-        if (!res.ok) throw new Error("Failed to fetch profile");
-        const data = await res.json();
-        setUser(data);
-      } catch (err) {
-        console.error(err);
-        alert("Failed to fetch profile. Please refresh!");
-      }
-    };
-    fetchProfile();
-  }, []);
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", color: "#aaa", marginTop: "4rem"}}>
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
 
+  if (!user) {
+    window.location.href = "/login";
+    return null;
+  }
 
   return (
     <div>

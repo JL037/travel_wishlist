@@ -18,7 +18,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
       // Try original request again
       res = await fetch(url, config);
     }
-    // ⚠️ Do NOT redirect here. Let your app handle it via `useAuthUser`.
+    //  Do NOT redirect here. Let your app handle it via `useAuthUser`.
     return res;
   }
 
