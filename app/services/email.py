@@ -10,8 +10,6 @@ RESEND_API_URL = "https://api.resend.com/emails"
 async def send_password_reset_email(background_tasks: BackgroundTasks, to_email: str, reset_token: str):
     reset_url = f"https://travelwishlist.app/reset-password?token={reset_token}"
 
-
-
     html = f"""
     <p>Hello,</p>
     <p>You requested to reset your password.</p>
@@ -41,5 +39,5 @@ async def _send_email(to: str, subject: str, html: str):
             response.raise_for_status()
         except httpx.HTTPStatusError as exc:
             logger.error(f"Email failed to send: {exc.response.status_code} - {exc.response.text}")
-        except Exception as e:
+        except Exception:
             logger.exception("Unexpected error sending email")
