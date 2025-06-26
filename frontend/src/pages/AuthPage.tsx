@@ -25,7 +25,7 @@ export default function AuthPage() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: isLogin
-          ? JSON.stringify({ email: username, password })
+          ? JSON.stringify({ email, password })
           : JSON.stringify({ email, username, password }),
       });
 
@@ -65,7 +65,6 @@ export default function AuthPage() {
         </p>
 
         <form onSubmit={handleSubmit}>
-          {!isLogin && (
             <input
               type="email"
               placeholder="Email"
@@ -73,7 +72,7 @@ export default function AuthPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-          )}
+          {!isLogin && (
           <input
             type="text"
             placeholder="Username"
@@ -81,6 +80,7 @@ export default function AuthPage() {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+        )}
           <div className="password-wrapper">
          <input
           type={showPassword ? "text" : "password"}
