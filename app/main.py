@@ -2,7 +2,7 @@ import sentry_sdk
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 from app.core.config import settings
 from fastapi import FastAPI
-from app.routers import wishlist, auth, visited, weather, user_saved_cities, travel_plans
+from app.routers import wishlist, auth, visited, weather, user_saved_cities, travel_plans, analytics
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 # from app.utils.datadog_logger import datadog_middleware
@@ -61,6 +61,7 @@ app.include_router(visited.router)
 app.include_router(weather.router, prefix="/api")
 app.include_router(user_saved_cities.router, prefix="/api", tags=["user-saved-cities"])
 app.include_router(travel_plans.router, prefix="/api")
+app.include_router(analytics.router)
 
 def custom_openapi():
     if app.openapi_schema:

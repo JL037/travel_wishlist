@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import "./ProfilePage.css";
 import WeatherWidget from "../components/WeatherWidget";
 import TravelPlanner from "../components/TravelPlanner";
+import AnalyticsBoard from "../components/AnalyticsBoard/AnalyticsBoard";
 import useAuthUser from "../hooks/useAuthUser";
 
 export default function ProfilePage() {
@@ -29,6 +30,9 @@ export default function ProfilePage() {
         </div>
         <div className="travel-planner-container">
           <TravelPlanner />
+        </div>
+        <div className="analytics-board-container">
+          <AnalyticsBoard />
         </div>
       </div>
     </div>

@@ -1,0 +1,59 @@
+
+.analytics-board {
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.analytics-board h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.analytics-board h3 {
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+}
+
+.analytics-board ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.analytics-board li {
+  margin-bottom: 0.5rem;
+}
+
+/* --------- RESPONSIVE MEDIA QUERIES --------- */
+@media (max-width: 768px) {
+  .analytics-board {
+    padding: 0.75rem;
+  }
+
+  .analytics-board h2 {
+    font-size: 1.4rem;
+  }
+
+  .analytics-board h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics-board {
+    padding: 0.5rem;
+  }
+
+  .analytics-board h2,
+  .analytics-board h3 {
+    text-align: center;
+  }
+
+  .analytics-board li {
+    font-size: 0.95rem;
+  }
+}

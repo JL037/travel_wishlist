@@ -1,6 +1,6 @@
 /* Base styling */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   margin: 0;
   background-image: url('/profilemap.jpg');
   background-size: cover;
@@ -20,7 +20,17 @@ body {
   margin-top: 40px;                
   box-sizing: border-box;
 }
-
+/* Analytics Board Container */
+.analytics-board-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  min-width: 300px;
+  max-width: 400px;
+  color: white;
+}
 /* Weather Widget */
 .weather-container {
   background-color: rgba(0, 0, 0, 0.6);

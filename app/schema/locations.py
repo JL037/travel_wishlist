@@ -101,6 +101,7 @@ class VisitedItemCreate(VisitedLocationBase):
 class VisitedItemUpdate(VisitedLocationBase):
     notes: Optional[str] = None
     visited_on: Optional[datetime] = None
+    rating: Optional[int] = None
 
 
 class VisitedWithDetailsOut(BaseModel):
