@@ -19,7 +19,13 @@ export default function TourProfilePage() {
             icon="01d"
           />
         </div>
-
+           {/* ✅ Tailwind Test Block */}
+        <div className="my-8 p-6 max-w-md mx-auto bg-white dark:bg-zinc-800 rounded-xl shadow-md space-y-4">
+          <h1 className="text-2xl font-bold text-blue-600">✅ Tailwind is working!</h1>
+          <p className="text-gray-700 dark:text-gray-300">
+            You’re seeing this styled block thanks to Tailwind.
+          </p>
+        </div>
         {/* 🔹 Mock Travel Plans */}
         <div className="travel-planner-container">
           <TourTravelPlanner
