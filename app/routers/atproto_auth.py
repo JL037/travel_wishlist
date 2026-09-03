@@ -9,9 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.database import get_db
+from app.dependencies.auth import get_current_user
 from app.models.atproto_oauth_request import AtprotoOAuthRequest
 from app.models.atproto_session import AtprotoSession
+from app.models.users import User
 from app.crud import get_or_create_user_for_did, store_refresh_token
+from app.services.atproto_sync import sync_all_pending_for_user
 from app.utils.atproto_identity import resolve_identity_for_login, fetch_authorization_server_metadata, AtprotoIdentityError
 from app.utils.atproto_dpop import generate_dpop_keypair, public_jwk_from_private_pem
 from app.utils.atproto_oauth import (
@@ -201,3 +204,41 @@ async def callback(code: str, state: str, iss: str, db: AsyncSession = Depends(g
         max_age=7 * 24 * 60 * 60,
     )
     return response
+
+
+class SyncToggleRequest(BaseModel):
+    enabled: bool
+
+
+@router.patch("/sync")
+async def set_sync_enabled(
+    body: SyncToggleRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Opt this user in/out of Phase 2 dual-write (see
+    AT_PROTOCOL_MIGRATION.md section 10). Requires an AT Proto identity -
+    there's nowhere to write records without one."""
+    if not current_user.did:
+        raise HTTPException(
+            status_code=400,
+            detail="AT Protocol dual-write requires signing in with AT Protocol first",
+        )
+
+    current_user.atproto_sync_enabled = body.enabled
+    await db.commit()
+    return {"atproto_sync_enabled": current_user.atproto_sync_enabled}
+
+
+@router.post("/sync-pending")
+async def sync_pending(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Retry every record that failed to sync to the PDS on its first
+    attempt. This is the manual "sync now" surface for the outbox pattern in
+    AT_PROTOCOL_MIGRATION.md section 7 - equally callable from a cron/worker
+    once one exists, since it just re-runs the same best-effort sync
+    functions the write-path background tasks use."""
+    counts = await sync_all_pending_for_user(db, current_user)
+    return {"synced": counts}

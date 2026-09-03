@@ -20,6 +20,7 @@ class UserRead(BaseModel):
     created_at: datetime
     role: UserRole
     did: Optional[str] = None
+    atproto_sync_enabled: bool = False
 
     model_config = ConfigDict(from_attributes=True)
 

@@ -1,12 +1,25 @@
 # Travel Wishlist → AT Protocol Migration Plan
 
-> **Status:** Phase 1 (Auth) is implemented — see `app/routers/atproto_auth.py`,
+> **Status:** Phase 1 (Auth) is implemented and its OAuth wire format has
+> been re-checked against the live spec (`app/routers/atproto_auth.py`,
 > `app/utils/atproto_identity.py`, `app/utils/atproto_dpop.py`,
-> `app/utils/atproto_oauth.py`, and the `AtprotoSession`/`AtprotoOAuthRequest`
-> models. It has not been exercised against a real PDS in this environment
-> (no live network access to atproto.com/docs.bsky.app to pin exact PAR/AS
-> discovery field names against the current spec) — verify against a real
-> account before enabling in production. Phases 2-5 are not started.
+> `app/utils/atproto_oauth.py`, the `AtprotoSession`/`AtprotoOAuthRequest`
+> models); the callback now validates the `iss` and token `sub` per RFC 9207
+> to close a mix-up-attack gap found during that check.
+>
+> Phase 2 (Dual-write) is also implemented — see `app/utils/atproto_repo.py`
+> (PDS repo writes + session refresh), `app/utils/atproto_lexicons.py`
+> (record builders), `app/services/atproto_sync.py` (outbox-pattern sync,
+> wired into the wishlist/visited/travel-plans write paths behind the new
+> per-user `User.atproto_sync_enabled` flag), `PATCH /auth/atproto/sync` and
+> `POST /auth/atproto/sync-pending`, and `scripts/backfill_atproto.py`.
+>
+> Neither phase has been exercised against a real PDS/account yet — this
+> environment's network egress proxy blocks all AT Protocol infrastructure
+> (`atproto.com`, `bsky.social`, `plc.directory`, `public.api.bsky.app`),
+> not just the docs sites, so this can only be verified from a real
+> browser/network, not from a session in this environment. Verify against a
+> real account before enabling in production. Phases 3-5 are not started.
 
 ## 1. Executive Summary
 

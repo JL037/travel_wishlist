@@ -1,5 +1,5 @@
 from app.database import Base
-from sqlalchemy import String, DateTime, func, Enum
+from sqlalchemy import String, DateTime, func, Enum, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 from typing import TYPE_CHECKING, Optional
@@ -36,6 +36,10 @@ class User(Base):
     # AT Protocol identity, once this account has been linked to one.
     did: Mapped[Optional[str]] = mapped_column(String, unique=True, index=True, nullable=True)
     pds_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    # Phase 2 (dual-write) opt-in - per-user, since it requires an active
+    # AT Proto identity and changes what happens on every write. Meaningless
+    # (and never checked) unless `did` is also set.
+    atproto_sync_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
 
     locations: Mapped[list["WishlistLocation"]] = relationship(
         "WishlistLocation", back_populates="owner", cascade="all, delete-orphan"

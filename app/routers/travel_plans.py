@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.models.travel_plan import TravelPlan
@@ -6,6 +6,8 @@ from app.models.users import User
 from app.database import get_db
 from app.dependencies.auth import get_current_user
 from app.schema.travel_plans import TravelPlanCreate, TravelPlanOut
+from app.services.atproto_sync import delete_remote_record_task, sync_travel_plan_task
+from app.utils.atproto_lexicons import TRAVEL_PLAN_COLLECTION
 
 router = APIRouter(tags=["Travel Plans"])
 
@@ -13,6 +15,7 @@ router = APIRouter(tags=["Travel Plans"])
 @router.post("/travel-plans", response_model=TravelPlanOut, status_code=status.HTTP_201_CREATED)
 async def create_plan(
     plan: TravelPlanCreate,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -20,6 +23,7 @@ async def create_plan(
     db.add(new_plan)
     await db.commit()
     await db.refresh(new_plan)
+    background_tasks.add_task(sync_travel_plan_task, current_user.id, new_plan.id)
     return new_plan
 
 
@@ -37,6 +41,7 @@ async def get_plans(
 @router.delete("/travel-plans/{plan_id}", status_code=status.HTTP_200_OK)
 async def delete_plan(
     plan_id: int,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -44,6 +49,9 @@ async def delete_plan(
     if not plan or plan.user_id != current_user.id:
         raise HTTPException(status_code=404, detail="Travel plan not found or not authorized to delete")
 
+    record_uri = plan.atproto_record_uri
     await db.delete(plan)
     await db.commit()
+
+    background_tasks.add_task(delete_remote_record_task, current_user.id, TRAVEL_PLAN_COLLECTION, record_uri)
     return {"message": "Travel plan deleted successfully."}
