@@ -93,7 +93,7 @@ async def start_login(body: StartLoginRequest, db: AsyncSession = Depends(get_db
 
 
 @router.get("/callback")
-async def callback(code: str, state: str, db: AsyncSession = Depends(get_db)):
+async def callback(code: str, state: str, iss: str, db: AsyncSession = Depends(get_db)):
     """The PDS redirects the user's browser back here after they approve
     (or deny) the login on their own authorization server."""
     _require_configured()
@@ -102,6 +102,15 @@ async def callback(code: str, state: str, db: AsyncSession = Depends(get_db)):
     oauth_request = result.scalar_one_or_none()
     if not oauth_request:
         raise HTTPException(status_code=400, detail="Unknown or expired login attempt")
+
+    # Mix-up attack defense (RFC 9207): the AS that answers the callback must
+    # be the same one we sent the PAR to. Skipping this lets a malicious or
+    # compromised authorization server mint a session under a different
+    # identity than the one the user actually authenticated with.
+    if iss != oauth_request.authorization_server:
+        await db.delete(oauth_request)
+        await db.commit()
+        raise HTTPException(status_code=400, detail="Authorization server mismatch")
 
     # Abandoned/stale attempts (>10 min) shouldn't be redeemable.
     if datetime.now(timezone.utc) - oauth_request.created_at > timedelta(minutes=10):
@@ -129,6 +138,14 @@ async def callback(code: str, state: str, db: AsyncSession = Depends(get_db)):
         await db.delete(oauth_request)
         await db.commit()
         raise HTTPException(status_code=502, detail=f"AT Protocol token exchange failed: {e}")
+
+    # Same defense as the `iss` check above, at the token-exchange step: the
+    # tokens must have actually been issued for the DID we resolved before
+    # redirecting, not some other account the AS decided to authenticate.
+    if token_response.get("sub") != oauth_request.did:
+        await db.delete(oauth_request)
+        await db.commit()
+        raise HTTPException(status_code=400, detail="Token subject does not match resolved DID")
 
     user = await get_or_create_user_for_did(
         db, did=oauth_request.did, pds_url=oauth_request.pds_url, handle=oauth_request.handle
