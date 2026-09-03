@@ -1,5 +1,13 @@
 # Travel Wishlist → AT Protocol Migration Plan
 
+> **Status:** Phase 1 (Auth) is implemented — see `app/routers/atproto_auth.py`,
+> `app/utils/atproto_identity.py`, `app/utils/atproto_dpop.py`,
+> `app/utils/atproto_oauth.py`, and the `AtprotoSession`/`AtprotoOAuthRequest`
+> models. It has not been exercised against a real PDS in this environment
+> (no live network access to atproto.com/docs.bsky.app to pin exact PAR/AS
+> discovery field names against the current spec) — verify against a real
+> account before enabling in production. Phases 2-5 are not started.
+
 ## 1. Executive Summary
 
 This document lays out a plan to move Travel Wishlist onto the **AT Protocol** (the

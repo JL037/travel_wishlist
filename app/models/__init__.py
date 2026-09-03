@@ -4,6 +4,8 @@ from .refresh_tokens import RefreshToken
 from .travel_plan import TravelPlan
 from .location import WishlistLocation
 from .users import User
+from .atproto_session import AtprotoSession
+from .atproto_oauth_request import AtprotoOAuthRequest
 
 
 

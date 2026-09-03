@@ -183,6 +183,14 @@ RESEND_API_KEY=your-resend-api-key
 
 # Monitoring
 SENTRY_DSN=your-sentry-dsn
+
+# AT Protocol OAuth (optional - "Sign in with AT Protocol" is disabled until set,
+# see AT_PROTOCOL_MIGRATION.md). ATPROTO_CLIENT_ID must be the exact public URL
+# this app serves its client metadata from, e.g.
+# https://travelwishlist.app/auth/atproto/client-metadata.json
+ATPROTO_CLIENT_ID=
+ATPROTO_CLIENT_URI=
+ATPROTO_REDIRECT_URI=
 ```
 
 ### Frontend Environment
