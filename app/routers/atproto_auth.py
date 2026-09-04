@@ -194,7 +194,7 @@ async def callback(code: str, state: str, iss: str, db: AsyncSession = Depends(g
     refresh_token = create_refresh_token(user_id=user.id, expires_delta=timedelta(days=7))
     await store_refresh_token(db, user_id=user.id, token=refresh_token)
 
-    redirect_target = f"{(settings.ATPROTO_CLIENT_URI or '').rstrip('/')}/profile"
+    redirect_target = f"{(settings.FRONTEND_URL or '').rstrip('/')}/profile"
     response = RedirectResponse(url=redirect_target, status_code=status.HTTP_302_FOUND)
     response.set_cookie(
         key="access_token", value=access_token, httponly=True, samesite="none", secure=True, max_age=1800,

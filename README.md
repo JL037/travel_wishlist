@@ -191,6 +191,10 @@ SENTRY_DSN=your-sentry-dsn
 ATPROTO_CLIENT_ID=
 ATPROTO_CLIENT_URI=
 ATPROTO_REDIRECT_URI=
+# Where the frontend lives - used only as the post-login redirect target.
+# Must NOT be set to the same value as ATPROTO_CLIENT_URI above (that one
+# has to share an origin with ATPROTO_CLIENT_ID instead).
+FRONTEND_URL=
 ```
 
 ### Frontend Environment
