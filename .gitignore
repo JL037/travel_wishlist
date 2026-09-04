@@ -84,7 +84,9 @@ package-lock.json
 *.orig
 TODO.md 
 db_blueprint.md 
-alembic.ini
+# alembic.ini is committed (see migrations/) - it holds no secrets, the
+# real DB URL comes from Settings.DATABASE_URL via migrations/env.py, and
+# Railway's pre-deploy migration step needs it present in the built image.
 config.py
 *.code-workspace
 .ruff_cache/
