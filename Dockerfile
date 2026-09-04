@@ -29,4 +29,4 @@ EXPOSE 8000
 # --reload). Baked into CMD rather than relying on a platform's separate
 # "pre-deploy command" feature - simpler to reason about and always in sync
 # with whatever image actually gets started.
-CMD ["sh", "-c", "python -m alembic stamp 47c18d3434d2 && python -m alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python -m alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
