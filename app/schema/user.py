@@ -15,10 +15,12 @@ class UserCreate(BaseModel):
 
 class UserRead(BaseModel):
     id: int
-    email: EmailStr
+    email: Optional[EmailStr] = None
     username: str
     created_at: datetime
     role: UserRole
+    did: Optional[str] = None
+    atproto_sync_enabled: bool = False
 
     model_config = ConfigDict(from_attributes=True)
 

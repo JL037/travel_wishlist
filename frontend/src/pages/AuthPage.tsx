@@ -10,7 +10,41 @@ export default function AuthPage() {
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [atprotoHandle, setAtprotoHandle] = useState("");
+  const [atprotoLoading, setAtprotoLoading] = useState(false);
+  const [atprotoError, setAtprotoError] = useState("");
   const navigate = useNavigate();
+
+  const handleAtprotoLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setAtprotoError("");
+    setAtprotoLoading(true);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/atproto/start`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ handle: atprotoHandle }),
+        }
+      );
+
+      if (!response.ok) {
+        const body = await response.json().catch(() => null);
+        throw new Error(body?.detail || "Could not start AT Protocol login");
+      }
+
+      const { authorization_url } = await response.json();
+      window.location.href = authorization_url;
+    } catch (err) {
+      console.error(err);
+      setAtprotoError(
+        err instanceof Error ? err.message : "AT Protocol login failed"
+      );
+      setAtprotoLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -142,6 +176,25 @@ export default function AuthPage() {
         />
 
         {error && <p style={{ color: "red" }}>{error}</p>}
+
+        {isLogin && (
+          <div className="atproto-login" style={{ marginTop: "1.5rem", borderTop: "1px solid #444", paddingTop: "1rem" }}>
+            <p>Or sign in with your AT Protocol account (Bluesky, etc.):</p>
+            <form onSubmit={handleAtprotoLogin} style={{ display: "flex", gap: "0.5rem" }}>
+              <input
+                type="text"
+                placeholder="yourhandle.bsky.social"
+                value={atprotoHandle}
+                onChange={(e) => setAtprotoHandle(e.target.value)}
+                required
+              />
+              <button type="submit" disabled={atprotoLoading}>
+                {atprotoLoading ? "Redirecting…" : "Sign in with AT Protocol"}
+              </button>
+            </form>
+            {atprotoError && <p style={{ color: "red" }}>{atprotoError}</p>}
+          </div>
+        )}
       </div>
     </div>
   );

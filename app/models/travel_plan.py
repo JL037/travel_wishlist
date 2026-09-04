@@ -1,8 +1,8 @@
-from sqlalchemy import Integer, String, Date, ForeignKey
+from sqlalchemy import Integer, String, Date, ForeignKey, Boolean, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from app.models.users import User
@@ -16,5 +16,12 @@ class TravelPlan(Base):
     end_date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
     location: Mapped[str] = mapped_column(String, nullable=False)
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
+
+    # Same Phase 2 bookkeeping as WishlistLocation, for the corresponding
+    # app.travelwishlist.travelPlan record. `notes` stays local-only.
+    atproto_record_uri: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    atproto_record_cid: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    atproto_sync_pending: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
+    atproto_sync_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     user: Mapped["User"] = relationship(back_populates="travel_plans")

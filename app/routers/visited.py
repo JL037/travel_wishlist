@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
@@ -7,6 +7,8 @@ from app.models.location import VisitedLocation, WishlistLocation
 from app.schema.locations import VisitedWithDetailsOut, VisitedItemUpdate
 from app.dependencies.auth import get_current_user
 from app.models.users import User
+from app.services.atproto_sync import delete_remote_record_task, sync_visited_location_task
+from app.utils.atproto_lexicons import VISITED_LOCATION_COLLECTION
 
 router = APIRouter(prefix="/visited", tags=["Visited Locations"])
 
@@ -41,6 +43,7 @@ async def get_visited_with_details(
 @router.delete("/{visited_location_id}", status_code=status.HTTP_200_OK)
 async def delete_visited_location(
     visited_location_id: int,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -57,15 +60,20 @@ async def delete_visited_location(
             detail="Visited location not found or not authorized to delete"
         )
 
+    record_uri = visited_location.atproto_record_uri
     await db.delete(visited_location)
     await db.commit()
 
+    background_tasks.add_task(
+        delete_remote_record_task, current_user.id, VISITED_LOCATION_COLLECTION, record_uri
+    )
     return {"message": "Visited location deleted."}
 
 @router.patch("/{visited_location_id}", response_model=VisitedItemUpdate)
 async def update_visited_location(
     visited_location_id: int,
     updates: VisitedItemUpdate,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -87,6 +95,8 @@ async def update_visited_location(
 
     await db.commit()
     await db.refresh(visited)
+
+    background_tasks.add_task(sync_visited_location_task, current_user.id, visited.id)
 
     return {
         **visited.__dict__,

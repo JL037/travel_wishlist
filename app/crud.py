@@ -144,3 +144,30 @@ async def get_refresh_token(db: AsyncSession, token: str):
         select(RefreshToken).where(RefreshToken.token == token)
     )
     return result.scalar_one_or_none()
+
+
+async def get_or_create_user_for_did(db: AsyncSession, did: str, pds_url: str, handle: str):
+    """Find the local account linked to this AT Protocol DID, or provision
+    one on first login. Mirrors register_user in app/routers/auth.py but
+    with no password - the user's PDS is their credential."""
+    from app.models.users import User
+
+    result = await db.execute(select(User).where(User.did == did))
+    user = result.scalar_one_or_none()
+    if user:
+        user.pds_url = pds_url
+        await db.commit()
+        await db.refresh(user)
+        return user
+
+    new_user = User(
+        did=did,
+        pds_url=pds_url,
+        username=handle,
+        email=None,
+        hashed_password=None,
+    )
+    db.add(new_user)
+    await db.commit()
+    await db.refresh(new_user)
+    return new_user

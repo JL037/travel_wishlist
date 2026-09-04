@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlalchemy import ForeignKey, String, DateTime, func, Integer, Text, Float
+from sqlalchemy import ForeignKey, String, DateTime, func, Integer, Text, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 from app.models.users import User
@@ -22,6 +22,15 @@ class WishlistLocation(Base):
         DateTime(timezone=True), server_default=func.now()
     )
 
+    # Phase 2 (dual-write) bookkeeping - AT-URI/CID of the
+    # app.travelwishlist.wishlist.location record in the owner's PDS repo,
+    # once it's been written there. `notes`/`description` above never leave
+    # this table - only the public fields this record mirrors do.
+    atproto_record_uri: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    atproto_record_cid: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    atproto_sync_pending: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
+    atproto_sync_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     owner = relationship("User", back_populates="locations")
     visited_locations: Mapped[list["VisitedLocation"]] = relationship(
@@ -42,8 +51,13 @@ class VisitedLocation(Base):
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     latitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     longitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    
 
+    # Same Phase 2 bookkeeping as WishlistLocation, for the corresponding
+    # app.travelwishlist.visited.location record.
+    atproto_record_uri: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    atproto_record_cid: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    atproto_sync_pending: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
+    atproto_sync_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     owner: Mapped["User"] = relationship(back_populates="visited_locations")
 
